@@ -3,3 +3,8 @@ services:
     build: .
     environment:
       - TZ=Asia/Tehran
+      - BOT_TOEKN=${BOT_TOEKN}
+      - CHAT_ID=${CHAT_ID}
+    env_file:
+      - .env
+    

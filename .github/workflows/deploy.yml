@@ -14,7 +14,6 @@ jobs:
     - name: Set up SSH key
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}"
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H 116.203.60.121 >> ~/.ssh/known_hosts
@@ -24,5 +23,5 @@ jobs:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         CHAT_ID: ${{ secrets.CHAT_ID }}
       run: |
-        ssh -o StrictHostKeyChecking=no root@116.203.60.121 'cd /root/projects/gheymat-chand && git pull origin main && ./deploy.sh'
+        ssh -o StrictHostKeyChecking=no root@116.203.60.121 'cd /root/projects/gheymat_chand && git pull origin main && ./deploy.sh'
 
