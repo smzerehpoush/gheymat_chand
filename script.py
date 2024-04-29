@@ -7,9 +7,12 @@ from datetime import datetime
 
 bot_token = os.environ.get('BOT_TOKEN')
 chat_id = os.environ.get('CHAT_ID')
+private_chat_id = os.environ.get('PRIVATE_CHAT_ID')
 
 lastPrice = 0
 url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
+requests.post(url, data={'chat_id': private_chat_id, 'text': 'bot updated'})
+
 while True:
   if(datetime.now().second % 30 != 0):
     continue
