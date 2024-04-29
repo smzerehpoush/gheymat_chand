@@ -22,4 +22,4 @@ jobs:
 
     - name: Deploy to Production
       run: |
-        ssh root@116.203.60.121 'cd /root/projects/gheymat_chand && git pull origin main && ./deploy.sh'
+        ssh root@${{ secrets.SSH_HOST }} 'cd /root/projects/gheymat_chand && git pull origin main && ./deploy.sh'
