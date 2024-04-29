@@ -2,7 +2,7 @@ import requests
 import time
 import traceback
 import os
-from khayyam import *
+from khayyam import JalaliDatetime
 from datetime import datetime
 
 bot_token = os.environ.get('BOT_TOKEN')
