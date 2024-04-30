@@ -19,7 +19,7 @@ def get_aban_tether_usdt_prices():
     nobitex_response = requests.get("https://abantether.com/management/all-coins")
     if(nobitex_response.status_code != 200):
       return None, None
-    for coin in nobitex_response.json().get('coins', []):
+    for coin in nobitex_response.json():
         if coin['name'] == 'USDT':
             buy_price = int(float(coin.get('buyPrice')))
             sell_price = int(float(coin.get('sellPrice')))
