@@ -26,8 +26,8 @@ while True:
     persian_date = now.strftime('%Y/%m/%d')
     persian_time = now.strftime('%H:%M:%S')
     text = f'🟡 Milli {price}\n'
-    text += f'🕐 {persian_date} {persian_time}\n'
-    text += '@gheymat_chandeو'
+    text += f'\n🕐 {persian_date} {persian_time}\n'
+    text += '@gheymat_chande'
 
     data = {'chat_id': chat_id, 'text': text, 'parse_mode': 'HTML', 'disable_web_page_preview': 'true'}
     if price != lastPrice:
