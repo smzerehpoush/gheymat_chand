@@ -19,9 +19,10 @@ def get_aban_tether_usdt_prices():
     try:
       nobitex_response = requests.get("https://abantether.com/management/all-coins")
       if(nobitex_response.status_code != 200):
+        print(nobitex_response.content)
         return None, None
       for coin in nobitex_response.json():
-          if coin['name'] == 'USDT':
+          if coin['symbol'] == 'USDT':
               buy_price = int(float(coin.get('buyPrice')))
               sell_price = int(float(coin.get('sellPrice')))
               return buy_price, sell_price
@@ -47,7 +48,7 @@ while True:
     text = f'Gold18K Milli {price:,} - {price:,}\n'
     ab_usdt_buy_price, ab_usdt_sell_price = get_aban_tether_usdt_prices()
     if ab_usdt_buy_price and ab_usdt_sell_price:
-       text += f'USDT Aban Tether {ab_usdt_buy_price:,}-{ab_usdt_sell_price:,}'
+       text += f'USDT Aban Tether {ab_usdt_buy_price:,}-{ab_usdt_sell_price:,}\n'
     text += f'\n🕐 {persian_date} {persian_time}\n'
     text += '@gheymat_chande'
 
