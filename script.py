@@ -5,6 +5,7 @@ import os
 from khayyam import JalaliDatetime
 from datetime import datetime
 
+profile = os.environ.get('GHEYMAT_CHAND_PROFILE')
 bot_token = os.environ.get('BOT_TOKEN')
 chat_id = os.environ.get('CHAT_ID')
 private_chat_id = os.environ.get('PRIVATE_CHAT_ID')
@@ -12,6 +13,21 @@ private_chat_id = os.environ.get('PRIVATE_CHAT_ID')
 lastPrice = 0
 url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
 requests.post(url, data={'chat_id': private_chat_id, 'text': 'bot updated'})
+
+
+def get_aban_tether_usdt_prices():
+    nobitex_response = requests.get("https://abantether.com/management/all-coins")
+    if(nobitex_response.status_code != 200):
+      return None, None
+    for coin in nobitex_response.json().get('coins', []):
+        if coin['name'] == 'USDT':
+            buy_price = int(float(coin.get('buyPrice')))
+            sell_price = int(float(coin.get('sellPrice')))
+            return buy_price, sell_price
+    
+    return None, None
+
+
 while True:
   if(datetime.now().second % 30 != 0):
     continue
@@ -25,17 +41,23 @@ while True:
     now = JalaliDatetime.now()
     persian_date = now.strftime('%Y/%m/%d')
     persian_time = now.strftime('%H:%M:%S')
-    text = f'🟡 Milli {price:,}\n'
+    text = f'Gold18K Milli {price:,} - {price:,}\n'
+    ab_usdt_buy_price, ab_usdt_sell_price = get_aban_tether_usdt_prices()
+    if ab_usdt_buy_price and ab_usdt_sell_price:
+       text += f'USDT Aban Tether {ab_usdt_buy_price:,}-{ab_usdt_sell_price:,}'
     text += f'\n🕐 {persian_date} {persian_time}\n'
     text += '@gheymat_chande'
 
     data = {'chat_id': chat_id, 'text': text, 'parse_mode': 'HTML', 'disable_web_page_preview': 'true'}
     if price != lastPrice:
-      response = requests.post(url, data=data)
-      if response.status_code == 200:
-        print('succeed')
+      if(profile == 'production'):
+        response = requests.post(url, data=data)
+        if response.status_code == 200:
+          print('succeed')
+        else:
+          print(f'failed: {response.text}')
       else:
-        print(f'failed: {response.text}')
+         print(text)
     lastPrice = price
   
     time.sleep(1)
