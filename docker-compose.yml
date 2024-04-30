@@ -6,6 +6,7 @@ services:
       - BOT_TOKEN
       - CHAT_ID
       - PRIVATE_CHAT_ID
+      - PYTHONUNBUFFERED=1
     env_file:
       - .env
     
