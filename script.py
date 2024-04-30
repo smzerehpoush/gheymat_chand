@@ -16,16 +16,19 @@ requests.post(url, data={'chat_id': private_chat_id, 'text': 'bot updated'})
 
 
 def get_aban_tether_usdt_prices():
-    nobitex_response = requests.get("https://abantether.com/management/all-coins")
-    if(nobitex_response.status_code != 200):
+    try:
+      nobitex_response = requests.get("https://abantether.com/management/all-coins")
+      if(nobitex_response.status_code != 200):
+        return None, None
+      for coin in nobitex_response.json():
+          if coin['name'] == 'USDT':
+              buy_price = int(float(coin.get('buyPrice')))
+              sell_price = int(float(coin.get('sellPrice')))
+              return buy_price, sell_price
       return None, None
-    for coin in nobitex_response.json():
-        if coin['name'] == 'USDT':
-            buy_price = int(float(coin.get('buyPrice')))
-            sell_price = int(float(coin.get('sellPrice')))
-            return buy_price, sell_price
-    
-    return None, None
+    except  Exception as e: 
+      traceback.print_exc()
+      return None, None
 
 
 while True:
