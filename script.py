@@ -19,6 +19,8 @@ while True:
     continue
   try:
     response = requests.get("https://milli.gold/api/v1/public/milli-price/detail")
+    if(response.status_code != 200):
+      print(response.json())
     price = int(response.json()['price18']*1000)
     text = '<b>نرخ طلای ۱۸ عیار</b> ' + '(خرید و فروش)\n\n'
     now = JalaliDatetime.now()
