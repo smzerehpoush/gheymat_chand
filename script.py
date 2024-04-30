@@ -47,6 +47,18 @@ def get_nobitex_usdt_prices(timestamp):
   except  Exception as e: 
       traceback.print_exc()
       return None, None
+  
+def get_tetherland_usdt_prices():
+  try:
+    tetherland_response = requests.post("https://api.teterlands.com/api/v4/info", {'type':'web'})
+    if(tetherland_response.status_code != 200):
+        print(tetherland_response.content)
+        return None, None
+    tetherland_price = tetherland_response.json()['price']
+    return tetherland_price, tetherland_price
+  except  Exception as e: 
+      traceback.print_exc()
+      return None, None
 
 while True:
   if(datetime.now().second % 30 != 0):
@@ -67,6 +79,10 @@ while True:
     nobitex_usdt_buy_price, nobitex_usdt_sell_price = get_nobitex_usdt_prices(timestamp)
     if nobitex_usdt_buy_price and nobitex_usdt_sell_price:
        text += f'USDT Nobitex {nobitex_usdt_buy_price:,}-{nobitex_usdt_sell_price:,}\n'
+    
+    tetherland_usdt_buy_price, tetherland_usdt_sell_price = get_tetherland_usdt_prices()
+    if tetherland_usdt_buy_price and tetherland_usdt_sell_price:
+       text += f'USDT Tether Land {tetherland_usdt_buy_price:,}-{tetherland_usdt_sell_price:,}\n'
     
     now = JalaliDatetime.now()
     persian_date = now.strftime('%Y/%m/%d')
