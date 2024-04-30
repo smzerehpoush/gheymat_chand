@@ -12,7 +12,8 @@ private_chat_id = os.environ.get('PRIVATE_CHAT_ID')
 
 lastPrice = 0
 url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
-requests.post(url, data={'chat_id': private_chat_id, 'text': 'bot updated'})
+if profile == "production":
+  requests.post(url, data={'chat_id': private_chat_id, 'text': 'bot updated'})
 
 
 def get_aban_tether_usdt_prices():
@@ -23,8 +24,8 @@ def get_aban_tether_usdt_prices():
         return None, None
       for coin in nobitex_response.json():
           if coin['symbol'] == 'USDT':
-              buy_price = int(float(coin.get('buyPrice')))
-              sell_price = int(float(coin.get('sellPrice')))
+              buy_price = int(float(coin.get('priceBuy')))
+              sell_price = int(float(coin.get('priceSell')))
               return buy_price, sell_price
       return None, None
     except  Exception as e: 
