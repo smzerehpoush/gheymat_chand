@@ -11,9 +11,7 @@ private_chat_id = os.environ.get('PRIVATE_CHAT_ID')
 
 lastPrice = 0
 url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
-res = requests.post(url, data={'chat_id': private_chat_id, 'text': 'bot updated'})
-print(f'res {res.text}')
-
+requests.post(url, data={'chat_id': private_chat_id, 'text': 'bot updated'})
 while True:
   if(datetime.now().second % 30 != 0):
     continue
@@ -21,6 +19,7 @@ while True:
     response = requests.get("https://milli.gold/api/v1/public/milli-price/detail")
     if(response.status_code != 200):
       print(f'res {response.text}')
+      requests.post(url, data={'chat_id': private_chat_id, 'text': f'bot error {response.text}'})
       continue
     price = int(response.json()['price18']*1000)
     text = '<b>نرخ طلای ۱۸ عیار</b> ' + '(خرید و فروش)\n\n'
