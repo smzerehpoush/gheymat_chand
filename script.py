@@ -21,18 +21,14 @@ while True:
       print(f'res {response.text}')
       requests.post(url, data={'chat_id': private_chat_id, 'text': f'bot error {response.text}'})
       continue
-    price = int(response.json()['price18']*1000)
-    text = '<b>نرخ طلای ۱۸ عیار</b> ' + '(خرید و فروش)\n\n'
+    price = int(response.json()['price18']*100)
     now = JalaliDatetime.now()
     persian_date = now.strftime('%Y/%m/%d')
     persian_time = now.strftime('%H:%M:%S')
-    text += f'<b>تاریخ: </b>' + f'{persian_date}\n'
-    text += f'<b>ساعت</b>: {persian_time}\n\n'
-    text += f'🟡 <b>{price:,}</b> ریال\n\n'
-    text += '<b>«میلی؛ به قدرت طلا»</b>\n\n'
-    text += '@milligold_liveprice'
+    text = f'🟡 Milli {price}\n'
+    text += f'🕐 {persian_date} {persian_time}\n'
+    text += '@gheymat_chandeو'
 
-  
     data = {'chat_id': chat_id, 'text': text, 'parse_mode': 'HTML', 'disable_web_page_preview': 'true'}
     if price != lastPrice:
       response = requests.post(url, data=data)
