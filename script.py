@@ -2,6 +2,7 @@ import requests
 import time
 import traceback
 import os
+import time
 from khayyam import JalaliDatetime
 from datetime import datetime
 
@@ -18,11 +19,11 @@ if profile == "production":
 
 def get_aban_tether_usdt_prices():
     try:
-      nobitex_response = requests.get("https://abantether.com/management/all-coins")
-      if(nobitex_response.status_code != 200):
-        print(nobitex_response.content)
+      ab_response = requests.get("https://abantether.com/management/all-coins")
+      if(ab_response.status_code != 200):
+        print(ab_response.content)
         return None, None
-      for coin in nobitex_response.json():
+      for coin in ab_response.json():
           if coin['symbol'] == 'USDT':
               buy_price = int(float(coin.get('priceBuy')))
               sell_price = int(float(coin.get('priceSell')))
@@ -31,25 +32,45 @@ def get_aban_tether_usdt_prices():
     except  Exception as e: 
       traceback.print_exc()
       return None, None
-
+    
+def get_nobitex_usdt_prices(timestamp):
+  try:
+    nobitex_url = f'https://chart.nobitex.ir/market/udf/history?symbol=USDTIRT&resolution=1&from={timestamp - 600}&to={timestamp}&countback=2&currencyCode=%EF%B7%BC'
+    nobitex_response = requests.get(nobitex_url)
+    if(nobitex_response.status_code != 200):
+        print(nobitex_response.content)
+        return None, None
+    nobitex_prices = nobitex_response.json()['c']
+    buy_price = int(nobitex_prices[0])
+    sell_price = int(nobitex_prices[1])
+    return buy_price, sell_price
+  except  Exception as e: 
+      traceback.print_exc()
+      return None, None
 
 while True:
   if(datetime.now().second % 30 != 0):
     continue
   try:
+    text = ''
+    timestamp = int(time.time())
     response = requests.get("https://milli.gold/api/v1/public/milli-price/detail")
     if(response.status_code != 200):
       print(f'res {response.text}')
       requests.post(url, data={'chat_id': private_chat_id, 'text': f'bot error {response.text}'})
       continue
     price = int(response.json()['price18']*100)
-    now = JalaliDatetime.now()
-    persian_date = now.strftime('%Y/%m/%d')
-    persian_time = now.strftime('%H:%M:%S')
-    text = f'Gold18K Milli {price:,} - {price:,}\n'
+    text += f'Gold18K Milli {price:,} - {price:,}\n'
     ab_usdt_buy_price, ab_usdt_sell_price = get_aban_tether_usdt_prices()
     if ab_usdt_buy_price and ab_usdt_sell_price:
        text += f'USDT Aban Tether {ab_usdt_buy_price:,}-{ab_usdt_sell_price:,}\n'
+    nobitex_usdt_buy_price, nobitex_usdt_sell_price = get_nobitex_usdt_prices(timestamp)
+    if nobitex_usdt_buy_price and nobitex_usdt_sell_price:
+       text += f'USDT Nobitex {nobitex_usdt_buy_price:,}-{nobitex_usdt_sell_price:,}\n'
+    
+    now = JalaliDatetime.now()
+    persian_date = now.strftime('%Y/%m/%d')
+    persian_time = now.strftime('%H:%M:%S')
     text += f'\n🕐 {persian_date} {persian_time}\n'
     text += '@gheymat_chande'
 
@@ -65,6 +86,6 @@ while True:
          print(text)
     lastPrice = price
   
-    time.sleep(1)
+    time.sleep(0.5)
   except  Exception as e: 
     traceback.print_exc()
