@@ -12,7 +12,7 @@ private_chat_id = os.environ.get('PRIVATE_CHAT_ID')
 lastPrice = 0
 url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
 res = requests.post(url, data={'chat_id': private_chat_id, 'text': 'bot updated'})
-print(res.content)
+print(f'res {res.text}')
 
 while True:
   if(datetime.now().second % 30 != 0):
@@ -37,9 +37,9 @@ while True:
     if price != lastPrice:
       response = requests.post(url, data=data)
       if response.status_code == 200:
-        print('Message sent successfully.')
+        print('succeed')
       else:
-        print(f'Error sending message: {response.text}')
+        print(f'failed: {response.text}')
     lastPrice = price
   
     time.sleep(1)
