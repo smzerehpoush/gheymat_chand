@@ -76,8 +76,9 @@ while True:
   if(datetime.now().second % 30 != 0):
     continue
   try:
-    text = ''
+    now = JalaliDatetime.now()
     timestamp = int(time.time())
+    text = ''
     response = requests.get("https://milli.gold/api/v1/public/milli-price/detail")
     if(response.status_code != 200):
       print(f'res {response.text}')
@@ -102,7 +103,7 @@ while True:
     if wallex_usdt_buy_price and wallex_usdt_sell_price:
        text += f'USDT Wallex {wallex_usdt_buy_price:,}-{wallex_usdt_sell_price:,}\n'
     
-    now = JalaliDatetime.now()
+    
     persian_date = now.strftime('%Y/%m/%d')
     persian_time = now.strftime('%H:%M:%S')
     text += f'\n🕐 {persian_date} {persian_time}\n'
