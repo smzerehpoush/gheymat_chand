@@ -12,7 +12,7 @@ private_chat_id = os.environ.get('PRIVATE_CHAT_ID')
 lastPrice = 0
 url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
 res = requests.post(url, data={'chat_id': private_chat_id, 'text': 'bot updated'})
-print(res)
+print(res.content)
 
 while True:
   if(datetime.now().second % 30 != 0):
