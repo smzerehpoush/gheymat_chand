@@ -60,6 +60,18 @@ def get_tetherland_usdt_prices():
       traceback.print_exc()
       return None, None
 
+def get_wallex_usdt_prices():
+  try:
+    wallex_response = requests.get("https://api.wallex.ir/v1/all-markets")
+    if(wallex_response.status_code != 200):
+        print(wallex_response.content)
+        return None, None
+    wallex_price = wallex_response.json()['result']['symbols']['USDTTMN']['OTC']['stats']['lastPrice']
+    return wallex_price, wallex_price
+  except  Exception as e: 
+      traceback.print_exc()
+      return None, None
+
 while True:
   if(datetime.now().second % 30 != 0):
     continue
@@ -73,9 +85,11 @@ while True:
       continue
     price = int(response.json()['price18']*100)
     text += f'Gold18K Milli {price:,} - {price:,}\n'
+    
     ab_usdt_buy_price, ab_usdt_sell_price = get_aban_tether_usdt_prices()
     if ab_usdt_buy_price and ab_usdt_sell_price:
        text += f'USDT Aban Tether {ab_usdt_buy_price:,}-{ab_usdt_sell_price:,}\n'
+    
     nobitex_usdt_buy_price, nobitex_usdt_sell_price = get_nobitex_usdt_prices(timestamp)
     if nobitex_usdt_buy_price and nobitex_usdt_sell_price:
        text += f'USDT Nobitex {nobitex_usdt_buy_price:,}-{nobitex_usdt_sell_price:,}\n'
@@ -83,6 +97,10 @@ while True:
     tetherland_usdt_buy_price, tetherland_usdt_sell_price = get_tetherland_usdt_prices()
     if tetherland_usdt_buy_price and tetherland_usdt_sell_price:
        text += f'USDT Tether Land {tetherland_usdt_buy_price:,}-{tetherland_usdt_sell_price:,}\n'
+    
+    wallex_usdt_buy_price, wallex_usdt_sell_price = get_wallex_usdt_prices()
+    if wallex_usdt_buy_price and wallex_usdt_sell_price:
+       text += f'USDT Wallex {wallex_usdt_buy_price:,}-{wallex_usdt_sell_price:,}\n'
     
     now = JalaliDatetime.now()
     persian_date = now.strftime('%Y/%m/%d')
