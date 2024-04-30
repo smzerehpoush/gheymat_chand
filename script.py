@@ -25,7 +25,7 @@ while True:
     now = JalaliDatetime.now()
     persian_date = now.strftime('%Y/%m/%d')
     persian_time = now.strftime('%H:%M:%S')
-    text = f'🟡 Milli {price}\n'
+    text = f'🟡 Milli {price:,}\n'
     text += f'\n🕐 {persian_date} {persian_time}\n'
     text += '@gheymat_chande'
 
