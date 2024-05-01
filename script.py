@@ -89,23 +89,33 @@ while True:
     text += f'{'Milli': <15} {price:,} - {price:,}\n'
     
     text+='\n💵\n'
-    
+    usdt_prices = []
+
     ab_usdt_buy_price, ab_usdt_sell_price = get_aban_tether_usdt_prices()
     if ab_usdt_buy_price and ab_usdt_sell_price:
-       text += f'{'Tether': <15} {ab_usdt_buy_price:,}-{ab_usdt_sell_price:,}\n'
+       usdt_prices.append(('Aban Tether',f'{ab_usdt_buy_price:,}-{ab_usdt_sell_price:,}'))
+      #  text += f'{'Tether': <15} {ab_usdt_buy_price:,}-{ab_usdt_sell_price:,}\n'
     
     nobitex_usdt_buy_price, nobitex_usdt_sell_price = get_nobitex_usdt_prices(timestamp)
     if nobitex_usdt_buy_price and nobitex_usdt_sell_price:
-       text += f'{'Nobitex': <15} {nobitex_usdt_buy_price:,}-{nobitex_usdt_sell_price:,}\n'
+       usdt_prices.append(('Nobitex', f'{nobitex_usdt_buy_price:,}-{nobitex_usdt_sell_price:,}'))
+      #  text += f'{'Nobitex': <15} {nobitex_usdt_buy_price:,}-{nobitex_usdt_sell_price:,}\n'
     
     tetherland_usdt_buy_price, tetherland_usdt_sell_price = get_tetherland_usdt_prices()
     if tetherland_usdt_buy_price and tetherland_usdt_sell_price:
-       text += f'{'Tether Land': <15} {tetherland_usdt_buy_price:,}-{tetherland_usdt_sell_price:,}\n'
+       usdt_prices.append(('Tether Land', f'{tetherland_usdt_buy_price:,}-{tetherland_usdt_sell_price:,}'))
+      #  text += f'{'Tether Land': <15} {tetherland_usdt_buy_price:,}-{tetherland_usdt_sell_price:,}\n'
     
     wallex_usdt_buy_price, wallex_usdt_sell_price = get_wallex_usdt_prices()
     if wallex_usdt_buy_price and wallex_usdt_sell_price:
-       text += f'{'Wallex': <15} {wallex_usdt_buy_price:,}-{wallex_usdt_sell_price:,}\n'
+       usdt_prices.append(('Wallex', f'{wallex_usdt_buy_price:,}-{wallex_usdt_sell_price:,}'))
+      #  text += f'{'Wallex': <15} {wallex_usdt_buy_price:,}-{wallex_usdt_sell_price:,}\n'
     
+    longest_name_length = max(len(name) for name, _ in usdt_prices)
+    formatted_message = ""
+    for name, price in usdt_prices:
+      formatted_message += "{:<{width}} {}\n".format(name, price, width=longest_name_length)
+    text += formatted_message
     
     persian_date = now.strftime('%Y/%m/%d')
     persian_time = now.strftime('%H:%M:%S')
