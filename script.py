@@ -111,11 +111,8 @@ while True:
        usdt_prices.append(('Wallex', f'{wallex_usdt_buy_price:,}-{wallex_usdt_sell_price:,}'))
       #  text += f'{'Wallex': <15} {wallex_usdt_buy_price:,}-{wallex_usdt_sell_price:,}\n'
     
-    longest_name_length = max(len(name) for name, _ in usdt_prices)
-    formatted_message = ""
     for name, price in usdt_prices:
-      formatted_message += "{:<{width}} {}\n".format(name, price, width=longest_name_length)
-    text += formatted_message
+      text += f"{name:<20} {price}\n"
     
     persian_date = now.strftime('%Y/%m/%d')
     persian_time = now.strftime('%H:%M:%S')
