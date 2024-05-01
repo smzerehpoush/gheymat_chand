@@ -85,23 +85,26 @@ while True:
       requests.post(url, data={'chat_id': private_chat_id, 'text': f'bot error {response.text}'})
       continue
     price = int(response.json()['price18']*100)
-    text += f'Gold18K Milli {price:,} - {price:,}\n'
+    text += '🟡\n'
+    text += f'Milli {price:,} - {price:,}\n'
+    
+    text+='\n💵\n'
     
     ab_usdt_buy_price, ab_usdt_sell_price = get_aban_tether_usdt_prices()
     if ab_usdt_buy_price and ab_usdt_sell_price:
-       text += f'USDT Aban Tether {ab_usdt_buy_price:,}-{ab_usdt_sell_price:,}\n'
+       text += f'Tether {ab_usdt_buy_price:,}-{ab_usdt_sell_price:,}\n'
     
     nobitex_usdt_buy_price, nobitex_usdt_sell_price = get_nobitex_usdt_prices(timestamp)
     if nobitex_usdt_buy_price and nobitex_usdt_sell_price:
-       text += f'USDT Nobitex {nobitex_usdt_buy_price:,}-{nobitex_usdt_sell_price:,}\n'
+       text += f'Nobitex {nobitex_usdt_buy_price:,}-{nobitex_usdt_sell_price:,}\n'
     
     tetherland_usdt_buy_price, tetherland_usdt_sell_price = get_tetherland_usdt_prices()
     if tetherland_usdt_buy_price and tetherland_usdt_sell_price:
-       text += f'USDT Tether Land {tetherland_usdt_buy_price:,}-{tetherland_usdt_sell_price:,}\n'
+       text += f'Tether Land {tetherland_usdt_buy_price:,}-{tetherland_usdt_sell_price:,}\n'
     
     wallex_usdt_buy_price, wallex_usdt_sell_price = get_wallex_usdt_prices()
     if wallex_usdt_buy_price and wallex_usdt_sell_price:
-       text += f'USDT Wallex {wallex_usdt_buy_price:,}-{wallex_usdt_sell_price:,}\n'
+       text += f'Wallex {wallex_usdt_buy_price:,}-{wallex_usdt_sell_price:,}\n'
     
     
     persian_date = now.strftime('%Y/%m/%d')
