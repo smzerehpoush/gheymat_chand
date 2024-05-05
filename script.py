@@ -71,48 +71,72 @@ def get_wallex_usdt_prices():
   except  Exception as e: 
       traceback.print_exc()
       return None, None
+  
+def get_milli_prices():
+    try:
+      milli_response = requests.get("https://milli.gold/api/v1/public/milli-price/detail")
+      if(milli_response.status_code != 200):
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Milli error:\n {response.text}'})
+        return None, None
+      milli_price = int(response.json()['price18']*100)
+      return milli_price, milli_price
+    except  Exception as e: 
+        traceback.print_exc()
+        return None, None
+    
+def get_goldika_prices():
+    try:
+      goldika_response = requests.get("https://goldika.ir/api/public/price")
+      if(goldika_response.status_code != 200):
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Goldika error:\n {response.text}'})
+        return None, None
+      goldika_price = response.json()['data']['price']
+      goldika_buy_price = int(goldika_price['buy']/10)
+      goldika_sell_price = int(goldika_price['sell']/10)
+      return goldika_buy_price, goldika_sell_price
+    except  Exception as e: 
+        traceback.print_exc()
+        return None, None
+    
+  
 
 while True:
   current_seconds = datetime.now().second
-  if(current_seconds < 28 or current_seconds > 30):
+  if(current_seconds < 30 or current_seconds > 32):
     continue
   try:
     now = JalaliDatetime.now()
     timestamp = int(time.time())
+    prices = []
     text = ''
-    response = requests.get("https://milli.gold/api/v1/public/milli-price/detail")
-    if(response.status_code != 200):
-      print(f'res {response.text}')
-      requests.post(url, data={'chat_id': private_chat_id, 'text': f'bot error {response.text}'})
-      continue
-    price = int(response.json()['price18']*100)
-    text += '🟡\n'
-    text += f'{'Milli': <15} {price:,} - {price:,}\n'
+    prices.append('🟡\n','')
+    milli_buy_price, milli_sell_price = get_milli_prices()
+    if milli_buy_price and milli_sell_price:
+       prices.append(('Milli',f'{milli_buy_price:,}-{milli_sell_price:,}'))
     
-    text+='\n💵\n'
-    usdt_prices = []
+    goldika_buy_price, goldika_sell_price = get_goldika_prices()
+    if goldika_buy_price and goldika_sell_price:
+       prices.append(('Goldika',f'{goldika_buy_price:,}-{goldika_sell_price:,}'))
+    
+    prices.append('\n💵\n','')  
 
     ab_usdt_buy_price, ab_usdt_sell_price = get_aban_tether_usdt_prices()
     if ab_usdt_buy_price and ab_usdt_sell_price:
-       usdt_prices.append(('Aban Tether',f'{ab_usdt_buy_price:,}-{ab_usdt_sell_price:,}'))
-      #  text += f'{'Tether': <15} {ab_usdt_buy_price:,}-{ab_usdt_sell_price:,}\n'
+       prices.append(('Aban Tether',f'{ab_usdt_buy_price:,}-{ab_usdt_sell_price:,}'))
     
     nobitex_usdt_buy_price, nobitex_usdt_sell_price = get_nobitex_usdt_prices(timestamp)
     if nobitex_usdt_buy_price and nobitex_usdt_sell_price:
-       usdt_prices.append(('Nobitex', f'{nobitex_usdt_buy_price:,}-{nobitex_usdt_sell_price:,}'))
-      #  text += f'{'Nobitex': <15} {nobitex_usdt_buy_price:,}-{nobitex_usdt_sell_price:,}\n'
-    
+       prices.append(('Nobitex', f'{nobitex_usdt_buy_price:,}-{nobitex_usdt_sell_price:,}'))
+      
     tetherland_usdt_buy_price, tetherland_usdt_sell_price = get_tetherland_usdt_prices()
     if tetherland_usdt_buy_price and tetherland_usdt_sell_price:
-       usdt_prices.append(('Tether Land', f'{tetherland_usdt_buy_price:,}-{tetherland_usdt_sell_price:,}'))
-      #  text += f'{'Tether Land': <15} {tetherland_usdt_buy_price:,}-{tetherland_usdt_sell_price:,}\n'
-    
+       prices.append(('Tether Land', f'{tetherland_usdt_buy_price:,}-{tetherland_usdt_sell_price:,}'))
+      
     wallex_usdt_buy_price, wallex_usdt_sell_price = get_wallex_usdt_prices()
     if wallex_usdt_buy_price and wallex_usdt_sell_price:
-       usdt_prices.append(('Wallex', f'{wallex_usdt_buy_price:,}-{wallex_usdt_sell_price:,}'))
-      #  text += f'{'Wallex': <15} {wallex_usdt_buy_price:,}-{wallex_usdt_sell_price:,}\n'
-    
-    for name, price in usdt_prices:
+       prices.append(('Wallex', f'{wallex_usdt_buy_price:,}-{wallex_usdt_sell_price:,}'))
+      
+    for name, price in prices:
       text += f"{name:<20} {price}\n"
     
     persian_date = now.strftime('%Y/%m/%d')
