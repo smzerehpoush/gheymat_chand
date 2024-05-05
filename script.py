@@ -94,7 +94,7 @@ def get_goldika_prices():
       if(goldika_response.status_code != 200):
         requests.post(url, data={'chat_id': private_chat_id, 'text': f'Goldika error:\n {response.text}'})
         return None, None
-      goldika_price = response.json()['data']['price']
+      goldika_price = goldika_response.json()['data']['price']
       goldika_buy_price = int(goldika_price['buy']/10)
       goldika_sell_price = int(goldika_price['sell']/10)
       return goldika_buy_price, goldika_sell_price
