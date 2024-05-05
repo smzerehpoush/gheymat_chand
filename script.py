@@ -139,6 +139,7 @@ while True:
       
     for name, price in prices:
       text += f"{name:<20} {price}\n"
+    print(text)
     
     persian_date = now.strftime('%Y/%m/%d')
     persian_time = now.strftime('%H:%M:%S')
