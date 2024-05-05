@@ -73,7 +73,7 @@ def get_wallex_usdt_prices():
       return None, None
 
 while True:
-  if(datetime.now().second % 30 != 0):
+  if(25 <= datetime.now().second <= 30):
     continue
   try:
     now = JalaliDatetime.now()
@@ -131,6 +131,6 @@ while True:
          print(text)
     lastPrice = price
   
-    time.sleep(0.5)
+    time.sleep(1)
   except  Exception as e: 
     traceback.print_exc()
