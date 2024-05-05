@@ -22,6 +22,7 @@ def get_aban_tether_usdt_prices():
       ab_response = requests.get("https://abantether.com/management/all-coins")
       if(ab_response.status_code != 200):
         print(ab_response.content)
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Aban tether error:\n {ab_response.text}'})
         return None, None
       for coin in ab_response.json():
           if coin['symbol'] == 'USDT':
@@ -39,6 +40,7 @@ def get_nobitex_usdt_prices(timestamp):
     nobitex_response = requests.get(nobitex_url)
     if(nobitex_response.status_code != 200):
         print(nobitex_response.content)
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Nobitex error:\n {nobitex_response.text}'})
         return None, None
     nobitex_prices = nobitex_response.json()['c']
     buy_price = int(nobitex_prices[0])
@@ -53,6 +55,7 @@ def get_tetherland_usdt_prices():
     tetherland_response = requests.post("https://api.teterlands.com/api/v4/info", {'type':'web'})
     if(tetherland_response.status_code != 200):
         print(tetherland_response.content)
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Tetherland error:\n {tetherland_response.text}'})
         return None, None
     tetherland_price = tetherland_response.json()['price']
     return tetherland_price, tetherland_price
@@ -65,6 +68,7 @@ def get_wallex_usdt_prices():
     wallex_response = requests.get("https://api.wallex.ir/v1/all-markets")
     if(wallex_response.status_code != 200):
         print(wallex_response.content)
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Wallex error:\n {wallex_response.text}'})
         return None, None
     wallex_price = wallex_response.json()['result']['symbols']['USDTTMN']['OTC']['stats']['lastPrice']
     return wallex_price, wallex_price
@@ -101,9 +105,6 @@ def get_goldika_prices():
   
 
 while True:
-  current_seconds = datetime.now().second
-  if(current_seconds < 30 or current_seconds > 32):
-    continue
   try:
     now = JalaliDatetime.now()
     timestamp = int(time.time())
@@ -156,6 +157,6 @@ while True:
          print(text)
     lastPrice = price
   
-    time.sleep(1)
+    time.sleep(30)
   except  Exception as e: 
     traceback.print_exc()
