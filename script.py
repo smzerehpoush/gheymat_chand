@@ -82,7 +82,7 @@ def get_milli_prices():
       if(milli_response.status_code != 200):
         requests.post(url, data={'chat_id': private_chat_id, 'text': f'Milli error:\n {response.text}'})
         return None, None
-      milli_price = int(response.json()['price18']*100)
+      milli_price = int(milli_response.json()['price18']*100)
       return milli_price, milli_price
     except  Exception as e: 
         traceback.print_exc()
