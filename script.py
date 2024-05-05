@@ -74,7 +74,7 @@ def get_wallex_usdt_prices():
 
 while True:
   current_seconds = datetime.now().second
-  if(current_seconds < 25 or current_seconds > 30):
+  if(current_seconds < 28 or current_seconds > 30):
     continue
   try:
     now = JalaliDatetime.now()
