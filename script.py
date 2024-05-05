@@ -110,7 +110,7 @@ while True:
     timestamp = int(time.time())
     prices = []
     text = ''
-    prices.append('🟡\n','')
+    prices.append(('🟡\n',''))
     milli_buy_price, milli_sell_price = get_milli_prices()
     if milli_buy_price and milli_sell_price:
        prices.append(('Milli',f'{milli_buy_price:,}-{milli_sell_price:,}'))
@@ -119,7 +119,7 @@ while True:
     if goldika_buy_price and goldika_sell_price:
        prices.append(('Goldika',f'{goldika_buy_price:,}-{goldika_sell_price:,}'))
     
-    prices.append('\n💵\n','')  
+    prices.append(('\n💵\n',''))  
 
     ab_usdt_buy_price, ab_usdt_sell_price = get_aban_tether_usdt_prices()
     if ab_usdt_buy_price and ab_usdt_sell_price:
