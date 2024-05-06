@@ -117,11 +117,15 @@ def get_bazar_token():
 def get_bazar_prices():   
   global bazar_token
   try:
+    token = None
     if(datetime.now().minute == 30 or bazar_token == ''):
-       bazar_token = get_bazar_token()
+       token = get_bazar_token()
+    else:
+       token = bazar_token
+
 
     bazar_headers = {
-        'Authorization': f'Bearer {bazar_token}',
+        'Authorization': f'Bearer {token}',
         'Content-Type': 'application/json'
     }
     print(bazar_headers)
