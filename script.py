@@ -4,7 +4,7 @@ import traceback
 import os
 import time
 from khayyam import JalaliDatetime
-from datetime import datetime
+import json
 
 profile = os.environ.get('GHEYMAT_CHAND_PROFILE')
 bot_token = os.environ.get('BOT_TOKEN')
@@ -105,9 +105,24 @@ def get_goldika_prices():
 def get_bazar_token():   
   try:
     headers = {
-        'Content-Type': 'application/json'
+        'accept': 'application/json, text/plain, */*',
+    'accept-language': 'en-US,en;q=0.9',
+    'cache-control': 'no-cache',
+    'content-type': 'application/json',
+    'dnt': '1',
+    'origin': 'https://web.baazar.ir',
+    'pragma': 'no-cache',
+    'priority': 'u=1, i',
+    'referer': 'https://web.baazar.ir/auth/login?redirect=%2Fdashboard',
+    'sec-ch-ua': '"Not-A.Brand";v="99", "Chromium";v="124"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"macOS"',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-origin',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
     }
-    bazar_login_response = requests.post("https://web.baazar.ir/api/shop/authenticate/v2/web-login/", data={'username': '09124398514', 'password': '13@sMz&77', 'rememberMe': 'true'}, headers=headers)
+    bazar_login_response = requests.post("https://web.baazar.ir/api/shop/authenticate/v2/web-login/", data= json.dumps({"username": "09124398514", "password": "13@sMz&77", "rememberMe": True}), headers=headers)
     if(bazar_login_response.status_code != 200):
         requests.post(url, data={'chat_id': private_chat_id, 'text': f'Bazar login error:\n {bazar_login_response.text}'})
         return ''
@@ -181,9 +196,9 @@ while True:
     if wallex_usdt_buy_price and wallex_usdt_sell_price:
        prices.append(('Wallex', f'{wallex_usdt_buy_price:,} - {wallex_usdt_sell_price:,}'))
       
-    # bazar_buy_price, bazar_sell_price = get_bazar_prices()
-    # if bazar_buy_price and bazar_sell_price:
-    #    prices.append(('Bazar', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
+    bazar_buy_price, bazar_sell_price = get_bazar_prices()
+    if bazar_buy_price and bazar_sell_price:
+       prices.append(('Bazar', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
       
     for name, price in prices:
       text += f"<code>{name:<15} {price}</code>\n"
