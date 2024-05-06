@@ -126,7 +126,7 @@ def get_bazar_prices():
         'Content-Type': 'application/json'
     }
     print(bazar_headers)
-    
+
     bazar_response = requests.get("https://web.baazar.ir/api/shop/account/v1/dashboard", headers=bazar_headers)
     if(bazar_response.status_code != 200):
       print(bazar_response.content)
@@ -181,7 +181,6 @@ while True:
       
     for name, price in prices:
       text += f"<code>{name:<15} {price}</code>\n"
-    print(text)
     
     persian_date = now.strftime('%Y/%m/%d')
     persian_time = now.strftime('%H:%M:%S')
