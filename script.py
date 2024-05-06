@@ -108,6 +108,7 @@ def get_bazar_token():
     if(bazar_login_response.status_code != 200):
         requests.post(url, data={'chat_id': private_chat_id, 'text': f'Bazar login error:\n {bazar_login_response.text}'})
         return ''
+    print(bazar_login_response.json())
     return bazar_login_response.json()['data']['token']
     
   except  Exception as e: 
