@@ -105,7 +105,7 @@ def get_goldika_prices():
 def get_bazar_token():   
   try:
     headers = {
-        'accept': 'application/json, text/plain, */*',
+    'accept': 'application/json, text/plain, */*',
     'accept-language': 'en-US,en;q=0.9',
     'cache-control': 'no-cache',
     'content-type': 'application/json',
@@ -125,11 +125,11 @@ def get_bazar_token():
     bazar_login_response = requests.post("https://web.baazar.ir/api/shop/authenticate/v2/web-login/", data= json.dumps({"username": "09124398514", "password": "13@sMz&77", "rememberMe": True}), headers=headers)
     if(bazar_login_response.status_code != 200):
         requests.post(url, data={'chat_id': private_chat_id, 'text': f'Bazar login error:\n {bazar_login_response.text}'})
-        return ''
+        return None
     return bazar_login_response.json()['data']['token']
   except  Exception as e: 
       traceback.print_exc()
-      return ''
+      return None
 
 def get_bazar_prices():   
   global bazar_token
@@ -140,6 +140,7 @@ def get_bazar_prices():
     # else:
     #    token = bazar_token
     token = get_bazar_token()
+    print(f'bazar token {token}')
     if(token is None or token == ''):
       return None, None
     bazar_headers = {
