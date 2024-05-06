@@ -170,6 +170,22 @@ def get_talasea_prices():
         traceback.print_exc()
         return None, None
     
+def get_daric_prices(timestamp):
+  try:
+    daric_url = f'https://apie.daric.gold/api/chart/history?symbol=GOLD18TMN&resolution=60&from={timestamp - 600}&to={timestamp}&countback=2&currencyCode=TMN'
+    daric_response = requests.get(daric_url)
+    if(daric_response.status_code != 200):
+        print(daric_response.content)
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Daric error:\n {daric_response.text}'})
+        return None, None
+    daric_prices = daric_response.json()['c']
+    buy_price = int(daric_prices[0])
+    sell_price = int(daric_prices[1])
+    return buy_price, sell_price
+  except  Exception as e: 
+      traceback.print_exc()
+      return None, None
+    
 while True:
   try:
     now = JalaliDatetime.now()
@@ -192,6 +208,10 @@ while True:
     talasea_buy_price, talasea_sell_price = get_talasea_prices()
     if talasea_buy_price and talasea_sell_price:
        prices.append(('Talasea',f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
+    
+    daric_buy_price, daric_sell_price = get_daric_prices(timestamp)
+    if daric_buy_price and daric_sell_price:
+       prices.append(('Daric', f'{daric_buy_price:,} - {daric_sell_price:,}'))
     
     
     prices.append(('\n💵',''))  
