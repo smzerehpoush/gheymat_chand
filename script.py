@@ -5,6 +5,7 @@ import os
 import time
 from khayyam import JalaliDatetime
 import json
+import datetime
 
 profile = os.environ.get('GHEYMAT_CHAND_PROFILE')
 bot_token = os.environ.get('BOT_TOKEN')
@@ -44,7 +45,7 @@ def get_nobitex_usdt_prices(timestamp):
         return None, None
     nobitex_prices = nobitex_response.json()['c']
     buy_price = int(nobitex_prices[0])
-    sell_price = int(nobitex_prices[1])
+    sell_price = int(nobitex_prices[0])
     return buy_price, sell_price
   except  Exception as e: 
       traceback.print_exc()
@@ -134,17 +135,11 @@ def get_bazar_token():
 def get_bazar_prices():   
   global bazar_token
   try:
-    # token = None
-    # if(datetime.now().minute == 30 or bazar_token == '' or bazar_token):
-    #    token = get_bazar_token()
-    # else:
-    #    token = bazar_token
-    token = get_bazar_token()
-    print(f'bazar token {token}')
-    if(token is None or token == ''):
-      return None, None
+    if(datetime.now().minute == 30 or bazar_token == '' or bazar_token):
+       bazar_token = get_bazar_token()
+    
     bazar_headers = {
-        'Authorization': f'Bearer {token}',
+        'Authorization': f'Bearer {bazar_token}',
         'Content-Type': 'application/json'
     }
     print(bazar_headers)
@@ -179,6 +174,10 @@ while True:
     if goldika_buy_price and goldika_sell_price:
        prices.append(('Goldika',f'{goldika_buy_price:,} - {goldika_sell_price:,}'))
     
+    bazar_buy_price, bazar_sell_price = get_bazar_prices()
+    if bazar_buy_price and bazar_sell_price:
+       prices.append(('Bazar', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
+    
     prices.append(('\n💵',''))  
 
     ab_usdt_buy_price, ab_usdt_sell_price = get_aban_tether_usdt_prices()
@@ -196,11 +195,7 @@ while True:
     wallex_usdt_buy_price, wallex_usdt_sell_price = get_wallex_usdt_prices()
     if wallex_usdt_buy_price and wallex_usdt_sell_price:
        prices.append(('Wallex', f'{wallex_usdt_buy_price:,} - {wallex_usdt_sell_price:,}'))
-      
-    bazar_buy_price, bazar_sell_price = get_bazar_prices()
-    if bazar_buy_price and bazar_sell_price:
-       prices.append(('Bazar', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
-      
+        
     for name, price in prices:
       text += f"<code>{name:<15} {price}</code>\n"
     
