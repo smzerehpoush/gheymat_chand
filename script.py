@@ -107,7 +107,7 @@ def get_bazar_token():
     headers = {
         'Content-Type': 'application/json'
     }
-    bazar_login_response = requests.post("https://web.baazar.ir/api/shop/authenticate/v2/web-login", data={'username': "09124398514", 'password': "13@sMz&77", 'rememberMe': 'true'}, headers=headers)
+    bazar_login_response = requests.post("https://web.baazar.ir/api/shop/authenticate/v2/web-login/", data={'username': '09124398514', 'password': '13@sMz&77', 'rememberMe': 'true'}, headers=headers)
     if(bazar_login_response.status_code != 200):
         requests.post(url, data={'chat_id': private_chat_id, 'text': f'Bazar login error:\n {bazar_login_response.text}'})
         return ''
@@ -125,8 +125,8 @@ def get_bazar_prices():
     # else:
     #    token = bazar_token
     token = get_bazar_token()
-    print(f'bazar token {token}')
-
+    if(token is None or token == ''):
+      return None, None
     bazar_headers = {
         'Authorization': f'Bearer {token}',
         'Content-Type': 'application/json'
