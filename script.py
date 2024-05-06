@@ -136,7 +136,7 @@ def get_bazar_prices():
     
   except  Exception as e: 
       traceback.print_exc()
-      return None
+      return None, None
 
 
 while True:
