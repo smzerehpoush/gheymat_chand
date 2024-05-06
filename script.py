@@ -125,6 +125,8 @@ def get_bazar_prices():
         'Authorization': f'Bearer {bazar_token}',
         'Content-Type': 'application/json'
     }
+    print(bazar_headers)
+    
     bazar_response = requests.get("https://web.baazar.ir/api/shop/account/v1/dashboard", headers=bazar_headers)
     if(bazar_response.status_code != 200):
       print(bazar_response.content)
