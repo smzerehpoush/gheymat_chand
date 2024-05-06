@@ -15,7 +15,7 @@ lastPrice = 0
 url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
 if profile == "production":
   requests.post(url, data={'chat_id': private_chat_id, 'text': 'bot updated'})
-bazar_token = None
+bazar_token = ''
 
 def get_aban_tether_usdt_prices():
     try:
@@ -106,22 +106,20 @@ def get_bazar_token():
   try:
     bazar_login_response = requests.post("https://web.baazar.ir/api/shop/authenticate/v2/web-login", {'username': "09124398514", 'password': "13@sMz&77", 'rememberMe': True})
     if(bazar_login_response.status_code != 200):
-        print("bazar login error : " + bazar_login_response.content)
         requests.post(url, data={'chat_id': private_chat_id, 'text': f'Bazar login error:\n {bazar_login_response.text}'})
-        return None
+        return ''
     return bazar_login_response.json()['data']['token']
     
   except  Exception as e: 
       traceback.print_exc()
-      return None
+      return ''
 
 def get_bazar_prices():   
   global bazar_token
   try:
-    # if(datetime.now().minute == 30 or bazar_token is None):
-      #  bazar_token = get_bazar_token()
+    if(datetime.now().minute == 30 or bazar_token == ''):
+       bazar_token = get_bazar_token()
 
-    bazar_token = get_bazar_token()
     bazar_headers = {
         'Authorization': f'Bearer {bazar_token}',
         'Content-Type': 'application/json'
