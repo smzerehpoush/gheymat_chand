@@ -138,7 +138,7 @@ while True:
        prices.append(('Wallex', f'{wallex_usdt_buy_price:,} - {wallex_usdt_sell_price:,}'))
       
     for name, price in prices:
-      text += f"{name:<20} {price}\n"
+      text += f"<pre>{name:<20} {price}</pre>\n"
     print(text)
     
     persian_date = now.strftime('%Y/%m/%d')
