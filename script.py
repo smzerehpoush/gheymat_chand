@@ -110,35 +110,35 @@ while True:
     timestamp = int(time.time())
     prices = []
     text = ''
-    prices.append(('🟡',''))
+    prices.append(('🟡','',''))
     milli_buy_price, milli_sell_price = get_milli_prices()
     if milli_buy_price and milli_sell_price:
-       prices.append(('<a href="https://milli.gold">Milli</a>',f'{milli_buy_price:,} - {milli_sell_price:,}'))
+       prices.append(('Milli','https://milli.gold',f'{milli_buy_price:,} - {milli_sell_price:,}'))
     
     goldika_buy_price, goldika_sell_price = get_goldika_prices()
     if goldika_buy_price and goldika_sell_price:
-       prices.append(('<a href="https://goldika.ir">Goldika</a>',f'{goldika_buy_price:,} - {goldika_sell_price:,}'))
+       prices.append(('Goldika','https://goldika.ir',f'{goldika_buy_price:,} - {goldika_sell_price:,}'))
     
-    prices.append(('\n💵',''))  
+    prices.append(('\n💵','',''))  
 
     ab_usdt_buy_price, ab_usdt_sell_price = get_aban_tether_usdt_prices()
     if ab_usdt_buy_price and ab_usdt_sell_price:
-       prices.append(('<a href="https://abantether.com">Aban Tether</a>',f'{ab_usdt_buy_price:,} - {ab_usdt_sell_price:,}'))
+       prices.append(('Aban Tether','https://abantether.com',f'{ab_usdt_buy_price:,} - {ab_usdt_sell_price:,}'))
     
     nobitex_usdt_buy_price, nobitex_usdt_sell_price = get_nobitex_usdt_prices(timestamp)
     if nobitex_usdt_buy_price and nobitex_usdt_sell_price:
-       prices.append(('<a href="https://nobitex.ir">Nobitex</a>', f'{nobitex_usdt_buy_price:,} - {nobitex_usdt_sell_price:,}'))
+       prices.append(('Nobitex','https://nobitex.ir', f'{nobitex_usdt_buy_price:,} - {nobitex_usdt_sell_price:,}'))
       
     tetherland_usdt_buy_price, tetherland_usdt_sell_price = get_tetherland_usdt_prices()
     if tetherland_usdt_buy_price and tetherland_usdt_sell_price:
-       prices.append(('<a href="https://tetherland.com">Tether Land</a>', f'{tetherland_usdt_buy_price:,} - {tetherland_usdt_sell_price:,}'))
+       prices.append(('Tether Land','https://tetherland.com', f'{tetherland_usdt_buy_price:,} - {tetherland_usdt_sell_price:,}'))
       
     wallex_usdt_buy_price, wallex_usdt_sell_price = get_wallex_usdt_prices()
     if wallex_usdt_buy_price and wallex_usdt_sell_price:
-       prices.append(('<a href="https://wallex.ir">Wallex</a>', f'{wallex_usdt_buy_price:,} - {wallex_usdt_sell_price:,}'))
+       prices.append(('Wallex','https://wallex.ir', f'{wallex_usdt_buy_price:,} - {wallex_usdt_sell_price:,}'))
       
-    for name, price in prices:
-      text += f"<code>{name:<15} {price}</code>\n"
+    for name, url, price in prices:
+      text += f'<a href="{url}"><code>{name:<15}</a> {price}</code>\n'
     print(text)
     
     persian_date = now.strftime('%Y/%m/%d')
