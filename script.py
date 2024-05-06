@@ -181,9 +181,9 @@ while True:
     if wallex_usdt_buy_price and wallex_usdt_sell_price:
        prices.append(('Wallex', f'{wallex_usdt_buy_price:,} - {wallex_usdt_sell_price:,}'))
       
-    bazar_buy_price, bazar_sell_price = get_bazar_prices()
-    if bazar_buy_price and bazar_sell_price:
-       prices.append(('Bazar', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
+    # bazar_buy_price, bazar_sell_price = get_bazar_prices()
+    # if bazar_buy_price and bazar_sell_price:
+    #    prices.append(('Bazar', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
       
     for name, price in prices:
       text += f"<code>{name:<15} {price}</code>\n"
