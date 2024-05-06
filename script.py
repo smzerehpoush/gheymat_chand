@@ -172,7 +172,7 @@ def get_talasea_prices():
     
 def get_daric_prices(timestamp):
   try:
-    daric_url = f'https://apie.daric.gold/api/chart/history?symbol=GOLD18TMN&resolution=60&from={timestamp - 6000}&to={timestamp}&countback=2&currencyCode=TMN'
+    daric_url = f'https://apie.daric.gold/api/chart/history?symbol=GOLD18TMN&resolution=60&from={timestamp - 36000}&to={timestamp}&countback=2&currencyCode=TMN'
     daric_response = requests.get(daric_url)
     if(daric_response.status_code != 200):
         print(daric_response.content)
