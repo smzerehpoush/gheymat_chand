@@ -113,7 +113,7 @@ while True:
     prices.append(('🟡',''))
     milli_buy_price, milli_sell_price = get_milli_prices()
     if milli_buy_price and milli_sell_price:
-       prices.append(('<a href="https://milli.gold">Milli</a<',f'{milli_buy_price:,} - {milli_sell_price:,}'))
+       prices.append(('<a href="https://milli.gold">Milli</a>',f'{milli_buy_price:,} - {milli_sell_price:,}'))
     
     goldika_buy_price, goldika_sell_price = get_goldika_prices()
     if goldika_buy_price and goldika_sell_price:
