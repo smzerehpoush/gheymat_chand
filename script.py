@@ -158,7 +158,18 @@ def get_bazar_prices():
       traceback.print_exc()
       return None, None
 
-
+def get_talasea_prices():
+    try:
+      talasea_response = requests.get("https://talasea.ir/api/goldPrice/day")
+      if(talasea_response.status_code != 200):
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Talasea error:\n {response.text}'})
+        return None, None
+      talasea_price = int(talasea_response.json()[-1]['price']*1000)
+      return talasea_price, talasea_price
+    except  Exception as e: 
+        traceback.print_exc()
+        return None, None
+    
 while True:
   try:
     now = JalaliDatetime.now()
@@ -177,6 +188,11 @@ while True:
     bazar_buy_price, bazar_sell_price = get_bazar_prices()
     if bazar_buy_price and bazar_sell_price:
        prices.append(('Bazar', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
+    
+    talasea_buy_price, talasea_sell_price = get_talasea_prices()
+    if talasea_buy_price and talasea_sell_price:
+       prices.append(('Talasea',f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
+    
     
     prices.append(('\n💵',''))  
 
