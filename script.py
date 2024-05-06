@@ -116,6 +116,7 @@ def get_bazar_token():
       return None
 
 def get_bazar_prices():   
+  global bazar_token
   try:
     if(datetime.now().minute == 30 or bazar_token == None):
        bazar_token = get_bazar_token()
