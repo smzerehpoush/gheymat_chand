@@ -5,7 +5,7 @@ import os
 import time
 from khayyam import JalaliDatetime
 import json
-import datetime
+from datetime import datetime
 
 profile = os.environ.get('GHEYMAT_CHAND_PROFILE')
 bot_token = os.environ.get('BOT_TOKEN')
@@ -135,7 +135,7 @@ def get_bazar_token():
 def get_bazar_prices():   
   global bazar_token
   try:
-    if(datetime.now().minute == 30 or bazar_token == '' or bazar_token):
+    if(datetime.now.minute == 30 or bazar_token == '' or bazar_token):
        bazar_token = get_bazar_token()
     
     bazar_headers = {
