@@ -106,7 +106,7 @@ def get_bazar_token():
   try:
     bazar_login_response = requests.post("https://web.baazar.ir/api/shop/authenticate/v2/web-login", {'username': "09124398514", 'password': "13@sMz&77", 'rememberMe': True})
     if(bazar_login_response.status_code != 200):
-        print(bazar_login_response.content)
+        print("bazar login error : " + bazar_login_response.content)
         requests.post(url, data={'chat_id': private_chat_id, 'text': f'Bazar login error:\n {bazar_login_response.text}'})
         return None
     return bazar_login_response.json()['data']['token']
