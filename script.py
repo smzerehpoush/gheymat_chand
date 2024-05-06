@@ -118,9 +118,10 @@ def get_bazar_token():
 def get_bazar_prices():   
   global bazar_token
   try:
-    if(datetime.now().minute == 30 or bazar_token is None):
-       bazar_token = get_bazar_token()
+    # if(datetime.now().minute == 30 or bazar_token is None):
+      #  bazar_token = get_bazar_token()
 
+    bazar_token = get_bazar_token()
     bazar_headers = {
         'Authorization': f'Bearer {bazar_token}',
         'Content-Type': 'application/json'
