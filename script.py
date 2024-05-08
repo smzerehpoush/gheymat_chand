@@ -247,7 +247,7 @@ while True:
         if response.status_code == 200:
           print('succeed')
         else:
-          print(f'failed: {response.text}')
+          print(f'failed: {response.text} for body {text}')
       else:
          print(text)
     lastPrice = price
