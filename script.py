@@ -81,7 +81,8 @@ def get_milli_prices():
     try:
       milli_response = requests.get("https://milli.gold/api/v1/public/milli-price/detail")
       if(milli_response.status_code != 200):
-        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Milli error:\n {response.text}'})
+        print(milli_response.content)
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Milli Gold error:\n {response.text}'})
         return None, None
       milli_price = int(milli_response.json()['price18']*100)
       return milli_price, milli_price
@@ -247,7 +248,7 @@ while True:
         if response.status_code == 200:
           print('succeed')
         else:
-          print(f'failed: {response.text} for body {text}')
+          print(f'failed to send message to telegram for body and response: \n{text}\n ----\n{response.text}\n####')
       else:
          print(text)
     lastPrice = price
