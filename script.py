@@ -23,7 +23,7 @@ def get_aban_tether_usdt_prices():
       ab_response = requests.get("https://abantether.com/management/all-coins")
       if(ab_response.status_code != 200):
         print(ab_response.content)
-        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Aban tether error:\n {ab_response.text}'})
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Aban tether error:\n {ab_response.content}'})
         return None, None
       for coin in ab_response.json():
           if coin['symbol'] == 'USDT':
@@ -41,7 +41,7 @@ def get_nobitex_usdt_prices(timestamp):
     nobitex_response = requests.get(nobitex_url)
     if(nobitex_response.status_code != 200):
         print(nobitex_response.content)
-        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Nobitex error:\n {nobitex_response.text}'})
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Nobitex error:\n {nobitex_response.content}'})
         return None, None
     nobitex_prices = nobitex_response.json()['c']
     buy_price = int(nobitex_prices[0])
@@ -56,7 +56,7 @@ def get_tetherland_usdt_prices():
     tetherland_response = requests.post("https://api.teterlands.com/api/v4/info", {'type':'web'})
     if(tetherland_response.status_code != 200):
         print(tetherland_response.content)
-        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Tetherland error:\n {tetherland_response.text}'})
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Tetherland error:\n {tetherland_response.content}'})
         return None, None
     tetherland_price = tetherland_response.json()['price']
     return tetherland_price, tetherland_price
@@ -69,7 +69,7 @@ def get_wallex_usdt_prices():
     wallex_response = requests.get("https://api.wallex.ir/v1/all-markets")
     if(wallex_response.status_code != 200):
         print(wallex_response.content)
-        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Wallex error:\n {wallex_response.text}'})
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Wallex error:\n {wallex_response.content}'})
         return None, None
     wallex_price = wallex_response.json()['result']['symbols']['USDTTMN']['OTC']['stats']['lastPrice']
     return wallex_price, wallex_price
@@ -82,7 +82,7 @@ def get_milli_prices():
       milli_response = requests.get("https://milli.gold/api/v1/public/milli-price/detail")
       if(milli_response.status_code != 200):
         print(milli_response.content)
-        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Milli Gold error:\n {response.text}'})
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Milli Gold error:\n {milli_response.status_code} \n {milli_response.content}'})
         return None, None
       milli_price = int(milli_response.json()['price18']*100)
       return milli_price, milli_price
@@ -94,7 +94,8 @@ def get_goldika_prices():
     try:
       goldika_response = requests.get("https://goldika.ir/api/public/price")
       if(goldika_response.status_code != 200):
-        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Goldika error:\n {response.text}'})
+        print(goldika_response.content)
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Goldika error:\n {goldika_response.content}'})
         return None, None
       goldika_price = goldika_response.json()['data']['price']
       goldika_buy_price = int(goldika_price['buy']/10)
@@ -126,7 +127,7 @@ def get_bazar_token():
     }
     bazar_login_response = requests.post("https://web.baazar.ir/api/shop/authenticate/v2/web-login/", data= json.dumps({"username": "09124398514", "password": "13@sMz&77", "rememberMe": True}), headers=headers)
     if(bazar_login_response.status_code != 200):
-        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Bazar login error:\n {bazar_login_response.text}'})
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Bazar login error:\n {bazar_login_response.content}'})
         return None
     return bazar_login_response.json()['data']['token']
   except  Exception as e: 
@@ -148,7 +149,7 @@ def get_bazar_prices():
     bazar_response = requests.get("https://web.baazar.ir/api/shop/account/v1/dashboard", headers=bazar_headers)
     if(bazar_response.status_code != 200):
       print(bazar_response.content)
-      requests.post(url, data={'chat_id': private_chat_id, 'text': f'Bazar  error:\n {bazar_response.text}'})
+      requests.post(url, data={'chat_id': private_chat_id, 'text': f'Bazar  error:\n {bazar_response.content}'})
       return None, None
     bazar_price = bazar_response.json()['data']
     bazar_buy_price = int(int(bazar_price['goldBuyPrice'])/10)
@@ -163,7 +164,8 @@ def get_talasea_prices():
     try:
       talasea_response = requests.get("https://talasea.ir/api/goldPrice/day")
       if(talasea_response.status_code != 200):
-        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Talasea error:\n {response.text}'})
+        print(talasea_response.content)
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Talasea error:\n {talasea_response.content}'})
         return None, None
       talasea_price = int(talasea_response.json()[-1]['price']*1000)
       return talasea_price, talasea_price
@@ -177,7 +179,7 @@ def get_daric_prices(timestamp):
     daric_response = requests.get(daric_url)
     if(daric_response.status_code != 200):
         print(daric_response.content)
-        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Daric error:\n {daric_response.text}'})
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Daric error:\n {daric_response.content}'})
         return None, None
     daric_prices = daric_response.json()['c']
     buy_price = int(daric_prices[0])
