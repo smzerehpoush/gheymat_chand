@@ -192,8 +192,8 @@ def get_daric_prices(timestamp):
 while True:
   try:
     now = JalaliDatetime.now()
-    print(f'start at {now}')
     timestamp = int(time.time())
+    print(f'start at {timestamp}')
     prices = []
     text = ''
     prices.append(('🟡',''))
