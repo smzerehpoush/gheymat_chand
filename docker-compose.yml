@@ -12,17 +12,4 @@ services:
       - .env
     restart:
       always
-  restarter:
-    image: docker:cli
-    restart: unless-stopped
-    volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
-    entrypoint: ["/bin/sh","-c"]
-    command:
-      - |
-        while true; do
-          if [ "$$(date +'%H:%M')" = '00:00' ]; then
-            docker restart app
-          fi
-          sleep 60
-        done
     
