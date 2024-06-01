@@ -6,6 +6,7 @@ import time
 from khayyam import JalaliDatetime
 import json
 from datetime import datetime
+import gc
 
 profile = os.environ.get('GHEYMAT_CHAND_PROFILE')
 bot_token = os.environ.get('BOT_TOKEN')
@@ -257,5 +258,7 @@ while True:
     lastPrice = price
   
     time.sleep(30)
+    gc.collect()
   except  Exception as e: 
     traceback.print_exc()
+    gc.collect()
