@@ -150,7 +150,8 @@ def get_bazar_prices():
     bazar_response = requests.get("https://web.baazar.ir/api/shop/account/v1/dashboard", headers=bazar_headers, timeout=1)
     if(bazar_response.status_code != 200):
       print(f'bazaar error:\n{bazar_response.content}')
-      requests.post(url, data={'chat_id': private_chat_id, 'text': f'Bazar  error:\n {bazar_response.content}'}, timeout=1)
+      if(bazar_response.status_code != 401):
+        requests.post(url, data={'chat_id': private_chat_id, 'text': f'Bazar  error:\n {bazar_response.content}'}, timeout=1)
       return None, None
     bazar_price = bazar_response.json()['data']
     bazar_buy_price = int(int(bazar_price['goldBuyPrice'])/10)
@@ -200,45 +201,45 @@ while True:
     prices.append(('🟡',''))
     milli_buy_price, milli_sell_price = get_milli_prices()
     if milli_buy_price and milli_sell_price:
-       prices.append(('Milli',f'{milli_buy_price:,} - {milli_sell_price:,}'))
+       prices.append(('میلی',f'{milli_buy_price:,} - {milli_sell_price:,}'))
     
     goldika_buy_price, goldika_sell_price = get_goldika_prices()
     if goldika_buy_price and goldika_sell_price:
-       prices.append(('Goldika',f'{goldika_buy_price:,} - {goldika_sell_price:,}'))
+       prices.append(('گلدیکا',f'{goldika_buy_price:,} - {goldika_sell_price:,}'))
     
     bazar_buy_price, bazar_sell_price = get_bazar_prices()
     if bazar_buy_price and bazar_sell_price:
-       prices.append(('Bazar', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
+       prices.append(('بازر', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
     
     talasea_buy_price, talasea_sell_price = get_talasea_prices()
     if talasea_buy_price and talasea_sell_price:
-       prices.append(('Talasea',f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
+       prices.append(('طلاسی',f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
     
     daric_buy_price, daric_sell_price = get_daric_prices(timestamp)
     if daric_buy_price and daric_sell_price:
-       prices.append(('Daric', f'{daric_buy_price:,} - {daric_sell_price:,}'))
+       prices.append(('داریک', f'{daric_buy_price:,} - {daric_sell_price:,}'))
     
     
     prices.append(('\n💵',''))  
 
     ab_usdt_buy_price, ab_usdt_sell_price = get_aban_tether_usdt_prices()
     if ab_usdt_buy_price and ab_usdt_sell_price:
-       prices.append(('Aban Tether',f'{ab_usdt_buy_price:,} - {ab_usdt_sell_price:,}'))
+       prices.append(('آبان تتر',f'{ab_usdt_buy_price:,} - {ab_usdt_sell_price:,}'))
     
     nobitex_usdt_buy_price, nobitex_usdt_sell_price = get_nobitex_usdt_prices(timestamp)
     if nobitex_usdt_buy_price and nobitex_usdt_sell_price:
-       prices.append(('Nobitex', f'{nobitex_usdt_buy_price:,} - {nobitex_usdt_sell_price:,}'))
+       prices.append(('نوبیتکس', f'{nobitex_usdt_buy_price:,} - {nobitex_usdt_sell_price:,}'))
       
     tetherland_usdt_buy_price, tetherland_usdt_sell_price = get_tetherland_usdt_prices()
     if tetherland_usdt_buy_price and tetherland_usdt_sell_price:
-       prices.append(('Tether Land', f'{tetherland_usdt_buy_price:,} - {tetherland_usdt_sell_price:,}'))
+       prices.append(('تتر لند', f'{tetherland_usdt_buy_price:,} - {tetherland_usdt_sell_price:,}'))
       
     wallex_usdt_buy_price, wallex_usdt_sell_price = get_wallex_usdt_prices()
     if wallex_usdt_buy_price and wallex_usdt_sell_price:
-       prices.append(('Wallex', f'{wallex_usdt_buy_price:,} - {wallex_usdt_sell_price:,}'))
+       prices.append(('والکس', f'{wallex_usdt_buy_price:,} - {wallex_usdt_sell_price:,}'))
         
     for name, price in prices:
-      text += f"<code><a href='https://mahdiyar.me'>{name}</a>{' '*(15 - len(name))}{price}</code>\n"
+      text += f"<code>{name}{' '*(15 - len(name))}{price}</code>\n"
     
     persian_date = now.strftime('%Y/%m/%d')
     persian_time = now.strftime('%H:%M:%S')
@@ -259,6 +260,6 @@ while True:
   
     time.sleep(30)
     gc.collect()
-  except  Exception as e: 
+  except Exception as e: 
     traceback.print_exc()
     gc.collect()
