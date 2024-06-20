@@ -213,7 +213,7 @@ while True:
     
     talasea_buy_price, talasea_sell_price = get_talasea_prices()
     if talasea_buy_price and talasea_sell_price:
-       prices.append(('  طلاسی',f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
+       prices.append(('طلاسی  ',f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
     
     daric_buy_price, daric_sell_price = get_daric_prices(timestamp)
     if daric_buy_price and daric_sell_price:
