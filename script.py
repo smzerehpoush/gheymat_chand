@@ -198,7 +198,7 @@ while True:
     print(f'start at {timestamp}')
     prices = []
     text = ''
-    prices.append(('🟡',''))
+    prices.append(('قیمت طلا 🟡',''))
     milli_buy_price, milli_sell_price = get_milli_prices()
     if milli_buy_price and milli_sell_price:
        prices.append(('میلی',f'{milli_buy_price:,} - {milli_sell_price:,}'))
@@ -213,14 +213,14 @@ while True:
     
     talasea_buy_price, talasea_sell_price = get_talasea_prices()
     if talasea_buy_price and talasea_sell_price:
-       prices.append(('طلاسی  ',f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
+       prices.append(('طلاسی',f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
     
     daric_buy_price, daric_sell_price = get_daric_prices(timestamp)
     if daric_buy_price and daric_sell_price:
        prices.append(('داریک', f'{daric_buy_price:,} - {daric_sell_price:,}'))
     
     
-    prices.append(('\n💵',''))  
+    prices.append(('\nقیمت تتر 💵',''))  
 
     ab_usdt_buy_price, ab_usdt_sell_price = get_aban_tether_usdt_prices()
     if ab_usdt_buy_price and ab_usdt_sell_price:
