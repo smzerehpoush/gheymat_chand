@@ -23,4 +23,4 @@ jobs:
 
     - name: Deploy to Production
       run: |
-        ssh root@${{ secrets.SSH_HOST }} 'cd /root/projects/gheymat_chand && git pull origin main && ./deploy.sh'
+        ssh root@${{ secrets.SSH_HOST }} 'cd /root/projects/personal/gheymat_chand && git pull origin main && ./deploy.sh'
