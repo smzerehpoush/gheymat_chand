@@ -16,3 +16,4 @@ services:
       - firefly_network
 networks:
   firefly_network:
+    external: true

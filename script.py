@@ -11,7 +11,7 @@ profile = os.environ.get('GHEYMAT_CHAND_PROFILE')
 bot_token = os.environ.get('BOT_TOKEN')
 chat_id = os.environ.get('CHAT_ID')
 private_chat_id = os.environ.get('PRIVATE_CHAT_ID')
-redis_connection = redis.Redis(host='redis', port=6379, db=1)
+redis_connection = redis.Redis(host='redis', port=6379, db=0)
 
 lastPrice = 0
 url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
@@ -44,7 +44,7 @@ while True:
         milli_buy_price, milli_sell_price = get_milli_prices()
         if milli_buy_price and milli_sell_price:
             prices.append(('میلی', f'{milli_buy_price:,} - {milli_sell_price:,}'))
-            redis_connection.set('milli_price', milli_buy_price)
+            redis_connection.set('milli_price', str(milli_buy_price))
 
         for name, price in prices:
             text += f"<code>{name}{' ' * (10 - len(name))}{price}</code>\n"
