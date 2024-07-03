@@ -13,7 +13,7 @@ services:
     restart:
       always
     networks:
-      - firefly_network
+      - firefly_firefly_network
 networks:
-  firefly_network:
+  firefly_firefly_network:
     external: true
