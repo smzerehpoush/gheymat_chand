@@ -1,6 +1,8 @@
+async-timeout==4.0.3
 certifi==2024.2.2
 charset-normalizer==3.3.2
 idna==3.7
 Khayyam==3.0.17
+redis==5.0.7
 requests==2.31.0
 urllib3==2.2.1
