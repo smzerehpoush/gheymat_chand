@@ -11,7 +11,6 @@ bot_token = os.environ.get('BOT_TOKEN')
 chat_id = os.environ.get('CHAT_ID')
 private_chat_id = os.environ.get('PRIVATE_CHAT_ID')
 
-lastPrice = 0
 url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
 
 
@@ -67,17 +66,15 @@ while True:
         text += '@gheymat_chande'
 
         data = {'chat_id': chat_id, 'text': text, 'parse_mode': 'HTML', 'disable_web_page_preview': 'true'}
-        if price != lastPrice:
-            if profile == 'production':
-                response = requests.post(url, data=data)
-                if response.status_code == 200:
-                    print('succeed')
-                else:
-                    print(
-                        f'failed to send message to telegram for body and response: \n{text}\n ----\n{response.text}\n####')
+        if profile == 'production':
+            response = requests.post(url, data=data)
+            if response.status_code == 200:
+                print('succeed')
             else:
-                print(text)
-        lastPrice = price
+                print(
+                    f'failed to send message to telegram for body and response: \n{text}\n ----\n{response.text}\n####')
+        else:
+            print(text)
         time.sleep(10)        
     except Exception as e:
         traceback.print_exc()
