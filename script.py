@@ -49,14 +49,14 @@ while True:
     try:
         now = JalaliDatetime.now()
         timestamp = int(time.time())
-        print(f'start at {now}')
+        print(f'start at {JalaliDatetime.now()}')
         prices = []
         text = ''
         prices.append(('قیمت طلا 🟡', ''))
         milli_price = get_milli_price()
         prices.append(('میلی', f'{milli_price:,}'))
         tala_dot_ir_price = get_tala_dot_ir_price()
-        prices.append(('طلا دات آی آر', f'{tala_dot_ir_price:,}'))
+        prices.append(('سایت طلا', f'{tala_dot_ir_price:,}'))
         for name, price in prices:
             text += f"<code>{name}{' ' * (10 - len(name))}{price}</code>\n"
 
