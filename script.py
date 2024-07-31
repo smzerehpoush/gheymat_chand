@@ -38,7 +38,7 @@ def get_tala_dot_ir_price():
                                      'text': f'Milli Gold error:\n {tala_dot_ir_response.status_code} \n {tala_dot_ir_response.content}'},
                           timeout=1)
             return None
-        tala_dot_ir_price = int(tala_dot_ir_response.json()['gold']['gold_18k']['v'])
+        tala_dot_ir_price = int(tala_dot_ir_response.json()['gold']['gold_18k']['v'].replace(",",""))
         return tala_dot_ir_price
     except  Exception:
         traceback.print_exc()
