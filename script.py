@@ -69,7 +69,7 @@ while True:
         data = {'chat_id': chat_id, 'text': text, 'parse_mode': 'HTML', 'disable_web_page_preview': 'true'}
         if price != lastPrice:
             if profile == 'production':
-                response = requests.post(url, data=data, timeout=1)
+                response = requests.post(url, data=data)
                 if response.status_code == 200:
                     print('succeed')
                 else:
