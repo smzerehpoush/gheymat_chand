@@ -4,6 +4,7 @@ import time
 import traceback
 import requests
 from khayyam import JalaliDatetime
+from datetime import datetime
 
 profile = os.environ.get('GHEYMAT_CHAND_PROFILE')
 bot_token = os.environ.get('BOT_TOKEN')
@@ -33,7 +34,7 @@ def get_tala_dot_ir_price():
     try:
         tala_dot_ir_response = requests.get("https://www.tala.ir/ajax/price/talair", timeout=1)
         if (tala_dot_ir_response.status_code != 200):
-            print(f'milli error:\n{tala_dot_ir_response.content}')
+            print(f'tala.ir error:\n{tala_dot_ir_response.content}')
             requests.post(url, data={'chat_id': private_chat_id,
                                      'text': f'Milli Gold error:\n {tala_dot_ir_response.status_code} \n {tala_dot_ir_response.content}'},
                           timeout=1)
@@ -49,7 +50,7 @@ while True:
     try:
         now = JalaliDatetime.now()
         timestamp = int(time.time())
-        print(f'start at {JalaliDatetime.now()}')
+        print(f'start at {datetime.now()}')
         prices = []
         text = ''
         prices.append(('قیمت طلا 🟡', ''))
@@ -77,8 +78,7 @@ while True:
             else:
                 print(text)
         lastPrice = price
-        time.sleep(20)
-        gc.collect()
+        time.sleep(10)        
     except Exception as e:
         traceback.print_exc()
-        gc.collect()
+
