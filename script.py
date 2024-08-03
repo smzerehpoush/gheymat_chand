@@ -75,7 +75,7 @@ while True:
                     f'failed to send message to telegram for body and response: \n{text}\n ----\n{response.text}\n####')
         else:
             print(text)
-        time.sleep(10)        
+        time.sleep(25)        
     except Exception as e:
         traceback.print_exc()
 
