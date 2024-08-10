@@ -176,9 +176,9 @@ while True:
         if tala_dot_ir_buy_price and tala_dot_ir_sell_price:
             prices.append(('سایت طلا', f'{tala_dot_ir_buy_price:,} - {tala_dot_ir_sell_price:,}'))
 
-        talasea_buy_price, talasea_sell_price = get_talasea_prices()
-        if talasea_buy_price and talasea_sell_price:
-            prices.append(('طلاسی', f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
+        # talasea_buy_price, talasea_sell_price = get_talasea_prices()
+        # if talasea_buy_price and talasea_sell_price:
+        #     prices.append(('طلاسی', f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
 
         goldika_buy_price, goldika_sell_price = get_goldika_prices()
         if goldika_buy_price and goldika_sell_price:
