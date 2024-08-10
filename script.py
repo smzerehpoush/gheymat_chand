@@ -173,19 +173,24 @@ while True:
         prices.append(('میلی', f'{milli_buy_price:,} - {milli_sell_price:,}'))
 
         tala_dot_ir_buy_price, tala_dot_ir_sell_price = get_tala_dot_ir_prices()
-        prices.append(('سایت طلا', f'{tala_dot_ir_buy_price:,} - {tala_dot_ir_sell_price:,}'))
+        if tala_dot_ir_buy_price and tala_dot_ir_sell_price:
+            prices.append(('سایت طلا', f'{tala_dot_ir_buy_price:,} - {tala_dot_ir_sell_price:,}'))
 
         talasea_buy_price, talasea_sell_price = get_talasea_prices()
-        prices.append(('طلاسی', f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
+        if talasea_buy_price and talasea_sell_price:
+            prices.append(('طلاسی', f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
 
         goldika_buy_price, goldika_sell_price = get_goldika_prices()
-        prices.append(('گلدیکا', f'{goldika_buy_price:,} - {goldika_sell_price:,}'))
+        if goldika_buy_price and goldika_sell_price:
+            prices.append(('گلدیکا', f'{goldika_buy_price:,} - {goldika_sell_price:,}'))
 
         bazar_buy_price, bazar_sell_price = get_bazar_prices()
-        prices.append(('بازر', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
+        if bazar_buy_price and bazar_sell_price:
+            prices.append(('بازر', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
 
         daric_buy_price, daric_sell_price = get_daric_prices(timestamp)
-        prices.append(('داریک', f'{daric_buy_price:,} - {daric_sell_price:,}'))
+        if daric_buy_price and daric_sell_price:
+            prices.append(('داریک', f'{daric_buy_price:,} - {daric_sell_price:,}'))
 
         prices.append(('اختلاف میلی و طلا', f'{milli_buy_price - tala_dot_ir_buy_price:,}'))
 
