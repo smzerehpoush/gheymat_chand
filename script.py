@@ -184,9 +184,10 @@ while True:
         bazar_buy_price, bazar_sell_price = get_bazar_prices()
         prices.append(('بازر', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
 
-
         daric_buy_price, daric_sell_price = get_daric_prices(timestamp)
         prices.append(('داریک', f'{daric_buy_price:,} - {daric_sell_price:,}'))
+
+        prices.append(('اختلاف میلی و طلا', f'{milli_buy_price - tala_dot_ir_buy_price:,}'))
 
         for name, price in prices:
             text += f"<code>{name}{' ' * (10 - len(name))}{price}</code>\n"
