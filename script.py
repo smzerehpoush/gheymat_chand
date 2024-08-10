@@ -4,7 +4,6 @@ import os
 import time
 import traceback
 
-import redis
 import requests
 from khayyam import JalaliDatetime
 
@@ -12,7 +11,6 @@ profile = os.environ.get('GHEYMAT_CHAND_PROFILE')
 bot_token = os.environ.get('BOT_TOKEN')
 chat_id = os.environ.get('CHAT_ID')
 private_chat_id = os.environ.get('PRIVATE_CHAT_ID')
-redis_connection = redis.Redis(host='redis', port=6379, db=1)
 url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
 bazar_token = ''
 
@@ -147,6 +145,22 @@ def get_daric_prices(timestamp):
         return None, None
 
 
+def get_tala_dot_ir_prices():
+    try:
+        tala_dot_ir_response = requests.get("https://www.tala.ir/ajax/price/talair", timeout=1)
+        if tala_dot_ir_response.status_code != 200:
+            print(f'tala.ir error:\n{tala_dot_ir_response.content}')
+            requests.post(url, data={'chat_id': private_chat_id,
+                                     'text': f'Milli Gold error:\n {tala_dot_ir_response.status_code} \n {tala_dot_ir_response.content}'},
+                          timeout=1)
+            return None, None
+        tala_dot_ir_price = int(tala_dot_ir_response.json()['gold']['gold_18k']['v'].replace(",", ""))
+        return tala_dot_ir_price, tala_dot_ir_price
+    except Exception:
+        traceback.print_exc()
+        return None, None
+
+
 while True:
     try:
         now = JalaliDatetime.now()
@@ -156,25 +170,23 @@ while True:
         text = ''
         prices.append(('قیمت طلا 🟡', ''))
         milli_buy_price, milli_sell_price = get_milli_prices()
-        if milli_buy_price and milli_sell_price:
-            prices.append(('میلی', f'{milli_buy_price:,} - {milli_sell_price:,}'))
-            redis_connection.set('my_key', 'my_value')
+        prices.append(('میلی', f'{milli_buy_price:,} - {milli_sell_price:,}'))
 
-        goldika_buy_price, goldika_sell_price = get_goldika_prices()
-        if goldika_buy_price and goldika_sell_price:
-            prices.append(('گلدیکا', f'{goldika_buy_price:,} - {goldika_sell_price:,}'))
-
-        bazar_buy_price, bazar_sell_price = get_bazar_prices()
-        if bazar_buy_price and bazar_sell_price:
-            prices.append(('بازر', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
+        tala_dot_ir_buy_price, tala_dot_ir_sell_price = get_tala_dot_ir_prices()
+        prices.append(('سایت طلا', f'{tala_dot_ir_buy_price:,} - {tala_dot_ir_sell_price:,}'))
 
         talasea_buy_price, talasea_sell_price = get_talasea_prices()
-        if talasea_buy_price and talasea_sell_price:
-            prices.append(('طلاسی', f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
+        prices.append(('طلاسی', f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
+
+        goldika_buy_price, goldika_sell_price = get_goldika_prices()
+        prices.append(('گلدیکا', f'{goldika_buy_price:,} - {goldika_sell_price:,}'))
+
+        bazar_buy_price, bazar_sell_price = get_bazar_prices()
+        prices.append(('بازر', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
+
 
         daric_buy_price, daric_sell_price = get_daric_prices(timestamp)
-        if daric_buy_price and daric_sell_price:
-            prices.append(('داریک', f'{daric_buy_price:,} - {daric_sell_price:,}'))
+        prices.append(('داریک', f'{daric_buy_price:,} - {daric_sell_price:,}'))
 
         for name, price in prices:
             text += f"<code>{name}{' ' * (10 - len(name))}{price}</code>\n"
