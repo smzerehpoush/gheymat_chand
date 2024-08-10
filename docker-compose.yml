@@ -14,16 +14,7 @@ services:
       always
     networks:
       - firefly_firefly_network
-  api:
-    build:
-      context: .
-      dockerfile: apiDockerfile
-    restart:
-      always
-    networks:
-      - firefly_firefly_network
-    ports:
-      - 8000:5000
+
 networks:
   firefly_firefly_network:
     external: true
