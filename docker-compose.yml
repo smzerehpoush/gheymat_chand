@@ -1,6 +1,8 @@
 services:
   app:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     environment:
       - TZ=Asia/Tehran
       - BOT_TOKEN
@@ -14,6 +16,20 @@ services:
       always
     networks:
       - firefly_firefly_network
+
+  api:
+    build:
+      context: .
+      dockerfile: apiDockerfile
+    environment:
+      - TZ=Asia/Tehran
+      - PYTHONUNBUFFERED=1
+    restart:
+      always
+    networks:
+      - firefly_firefly_network
+    ports:
+      - 5000:5000
 
 networks:
   firefly_firefly_network:
