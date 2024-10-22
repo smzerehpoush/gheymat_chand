@@ -169,7 +169,7 @@ def store_prices_in_redis(prices):
         # Add prices to the Redis list
         redis_connection.rpush(REDIS_KEY, prices_json)
         # Trim the list to the last 30 entries
-        redis_connection.ltrim(REDIS_KEY, -30, -1)
+        redis_connection.ltrim(REDIS_KEY, -60, -1)
     except Exception as e:
         print(f"Error storing prices in Redis: {e}")
         traceback.print_exc()
