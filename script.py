@@ -208,10 +208,10 @@ while True:
             # prices.append(('بازر', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
             # dataset_prices['بازر']= int((bazar_buy_price+ bazar_sell_price)/2)
 
-        daric_buy_price, daric_sell_price = get_daric_prices(timestamp)
-        if daric_buy_price and daric_sell_price:
-            prices.append(('داریک', f'{daric_buy_price:,} - {daric_sell_price:,}'))
-            dataset_prices['داریک']= int((daric_buy_price+ daric_sell_price)/2)
+        # daric_buy_price, daric_sell_price = get_daric_prices(timestamp)
+        # if daric_buy_price and daric_sell_price:
+        #     prices.append(('داریک', f'{daric_buy_price:,} - {daric_sell_price:,}'))
+        #     dataset_prices['داریک']= int((daric_buy_price+ daric_sell_price)/2)
 
         print({time: timestamp, prices: dataset_prices})
         prices.append(('اختلاف میلی و طلا', f'{milli_buy_price - tala_dot_ir_buy_price:,}'))
