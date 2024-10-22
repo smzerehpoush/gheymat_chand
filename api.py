@@ -10,7 +10,7 @@ redis_connection = redis.Redis(host='redis', port=6379, db=1)
 # Redis key where prices are stored
 REDIS_KEY = 'prices_history'
 
-@app.route('/api/prices', methods=['GET'])
+@app.route('/gold/api/prices', methods=['GET'])
 def get_last_30_prices():
     try:
         # Fetch the last 30 items from the Redis list
