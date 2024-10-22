@@ -3,7 +3,7 @@ import json
 import os
 import time
 import traceback
-
+import redis
 import requests
 from khayyam import JalaliDatetime
 
@@ -13,7 +13,8 @@ chat_id = os.environ.get('CHAT_ID')
 private_chat_id = os.environ.get('PRIVATE_CHAT_ID')
 url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
 bazar_token = ''
-
+redis_connection = redis.Redis(host='redis', port=6379, db=1)
+REDIS_KEY = 'prices_history'
 
 def get_milli_prices():
     try:
@@ -160,6 +161,17 @@ def get_tala_dot_ir_prices():
         traceback.print_exc()
         return None, None
 
+def store_prices_in_redis(prices):
+    try:
+        # Serialize prices to JSON
+        prices_json = json.dumps(prices)
+        # Add prices to the Redis list
+        redis_connection.rpush(REDIS_KEY, prices_json)
+        # Trim the list to the last 30 entries
+        redis_connection.ltrim(REDIS_KEY, -30, -1)
+    except Exception as e:
+        print(f"Error storing prices in Redis: {e}")
+        traceback.print_exc()
 
 while True:
     try:
@@ -167,31 +179,41 @@ while True:
         timestamp = int(time.time())
         print(f'start at {timestamp}')
         prices = []
+        dataset_prices = {}
         text = ''
         prices.append(('قیمت طلا 🟡', ''))
         milli_buy_price, milli_sell_price = get_milli_prices()
-        prices.append(('میلی', f'{milli_buy_price:,} - {milli_sell_price:,}'))
+        if milli_buy_price:
+            prices.append(('میلی', f'{milli_buy_price:,} - {milli_sell_price:,}'))
+            dataset_prices['میلی']= int((milli_buy_price+ milli_sell_price)/2)
 
         tala_dot_ir_buy_price, tala_dot_ir_sell_price = get_tala_dot_ir_prices()
         if tala_dot_ir_buy_price and tala_dot_ir_sell_price:
             prices.append(('سایت طلا', f'{tala_dot_ir_buy_price:,} - {tala_dot_ir_sell_price:,}'))
+            dataset_prices['سایت طلا']= int((tala_dot_ir_buy_price+ tala_dot_ir_sell_price)/2)
+        
 
-        # talasea_buy_price, talasea_sell_price = get_talasea_prices()
-        # if talasea_buy_price and talasea_sell_price:
-        #     prices.append(('طلاسی', f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
+        talasea_buy_price, talasea_sell_price = get_talasea_prices()
+        if talasea_buy_price and talasea_sell_price:
+            prices.append(('طلاسی', f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
+            dataset_prices['طلاسی']= int((talasea_buy_price+ talasea_sell_price)/2)
 
         goldika_buy_price, goldika_sell_price = get_goldika_prices()
         if goldika_buy_price and goldika_sell_price:
             prices.append(('گلدیکا', f'{goldika_buy_price:,} - {goldika_sell_price:,}'))
+            dataset_prices['گلدیکا']= int((goldika_buy_price+ goldika_sell_price)/2)
 
         bazar_buy_price, bazar_sell_price = get_bazar_prices()
         if bazar_buy_price and bazar_sell_price:
             prices.append(('بازر', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
+            dataset_prices['بازر']= int((bazar_buy_price+ bazar_sell_price)/2)
 
         daric_buy_price, daric_sell_price = get_daric_prices(timestamp)
         if daric_buy_price and daric_sell_price:
             prices.append(('داریک', f'{daric_buy_price:,} - {daric_sell_price:,}'))
+            dataset_prices['داریک']= int((daric_buy_price+ daric_sell_price)/2)
 
+        store_prices_in_redis({time: timestamp, prices: dataset_prices})
         prices.append(('اختلاف میلی و طلا', f'{milli_buy_price - tala_dot_ir_buy_price:,}'))
 
         for name, price in prices:
@@ -211,7 +233,7 @@ while True:
                 print(
                     f'failed to send message to telegram for body and response: \n{text}\n ----\n{response.text}\n####')
 
-        time.sleep(10)
+        time.sleep(30)
         gc.collect()
     except Exception:
         traceback.print_exc()
