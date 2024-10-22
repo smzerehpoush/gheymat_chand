@@ -15,7 +15,7 @@ REDIS_KEY = 'prices_history'
 def get_last_30_prices():
     try:
         # Fetch the last 30 items from the Redis list
-        last_30_items = redis_connection.lrange(REDIS_KEY, -30, -1)
+        last_30_items = redis_connection.lrange(REDIS_KEY, -60, -1)
         
         # Decode the bytes data to strings (assuming the data is stored as JSON strings)
         last_30_items = [item.decode('utf-8') for item in last_30_items]
