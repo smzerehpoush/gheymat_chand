@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 import redis
+import json  # Import the json module to handle JSON strings
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -19,11 +20,10 @@ def get_last_30_prices():
         # Decode the bytes data to strings (assuming the data is stored as JSON strings)
         last_30_items = [item.decode('utf-8') for item in last_30_items]
         
-        # Optionally, if the data is in JSON format, convert it back to Python objects
-        # import json
-        # last_30_items = [json.loads(item) for item in last_30_items]
+        # Convert the JSON strings to Python objects
+        last_30_items = [json.loads(item) for item in last_30_items]
 
-        # Return the data as JSON response
+        # Return the data as a JSON response
         return jsonify({'dataset': last_30_items}), 200
 
     except Exception as e:
