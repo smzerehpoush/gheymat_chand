@@ -185,23 +185,23 @@ while True:
         milli_buy_price, milli_sell_price = get_milli_prices()
         if milli_buy_price:
             prices.append(('میلی', f'{milli_buy_price:,} - {milli_sell_price:,}'))
-            dataset_prices['میلی']= int((milli_buy_price+ milli_sell_price)/2)
+            dataset_prices['milli.gold']= int((milli_buy_price+ milli_sell_price)/2)
 
         tala_dot_ir_buy_price, tala_dot_ir_sell_price = get_tala_dot_ir_prices()
         if tala_dot_ir_buy_price and tala_dot_ir_sell_price:
             prices.append(('سایت طلا', f'{tala_dot_ir_buy_price:,} - {tala_dot_ir_sell_price:,}'))
-            dataset_prices['سایت طلا']= int((tala_dot_ir_buy_price+ tala_dot_ir_sell_price)/2)
+            dataset_prices['tala.ir']= int((tala_dot_ir_buy_price+ tala_dot_ir_sell_price)/2)
         
 
         talasea_buy_price, talasea_sell_price = get_talasea_prices()
         if talasea_buy_price and talasea_sell_price:
             prices.append(('طلاسی', f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
-            dataset_prices['طلاسی']= int((talasea_buy_price+ talasea_sell_price)/2)
+            dataset_prices['talasi']= int((talasea_buy_price+ talasea_sell_price)/2)
 
         goldika_buy_price, goldika_sell_price = get_goldika_prices()
         if goldika_buy_price and goldika_sell_price:
             prices.append(('گلدیکا', f'{goldika_buy_price:,} - {goldika_sell_price:,}'))
-            dataset_prices['گلدیکا']= int((goldika_buy_price+ goldika_sell_price)/2)
+            dataset_prices['goldika']= int((goldika_buy_price+ goldika_sell_price)/2)
 
         # bazar_buy_price, bazar_sell_price = get_bazar_prices()
         # if bazar_buy_price and bazar_sell_price:
