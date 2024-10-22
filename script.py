@@ -163,6 +163,7 @@ def get_tala_dot_ir_prices():
 
 def store_prices_in_redis(prices):
     try:
+        print(prices)
         # Serialize prices to JSON
         prices_json = json.dumps(prices)
         # Add prices to the Redis list
