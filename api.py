@@ -24,7 +24,7 @@ def get_last_30_prices():
         # last_30_items = [json.loads(item) for item in last_30_items]
 
         # Return the data as JSON response
-        return jsonify(last_30_items), 200
+        return jsonify({'dataset': last_30_items}), 200
 
     except Exception as e:
         # Handle exceptions and return an error message
