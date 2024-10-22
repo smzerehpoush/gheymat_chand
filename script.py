@@ -203,10 +203,10 @@ while True:
             prices.append(('گلدیکا', f'{goldika_buy_price:,} - {goldika_sell_price:,}'))
             dataset_prices['گلدیکا']= int((goldika_buy_price+ goldika_sell_price)/2)
 
-        bazar_buy_price, bazar_sell_price = get_bazar_prices()
-        if bazar_buy_price and bazar_sell_price:
-            prices.append(('بازر', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
-            dataset_prices['بازر']= int((bazar_buy_price+ bazar_sell_price)/2)
+        # bazar_buy_price, bazar_sell_price = get_bazar_prices()
+        # if bazar_buy_price and bazar_sell_price:
+            # prices.append(('بازر', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
+            # dataset_prices['بازر']= int((bazar_buy_price+ bazar_sell_price)/2)
 
         daric_buy_price, daric_sell_price = get_daric_prices(timestamp)
         if daric_buy_price and daric_sell_price:
