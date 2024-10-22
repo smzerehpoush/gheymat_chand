@@ -163,8 +163,10 @@ def get_tala_dot_ir_prices():
 
 def store_prices_in_redis(prices):
     try:
+        # Serialize prices to JSON
+        prices_json = json.dumps(prices)
         # Add prices to the Redis list
-        redis_connection.rpush(REDIS_KEY, prices)
+        redis_connection.rpush(REDIS_KEY, prices_json)
         # Trim the list to the last 30 entries
         redis_connection.ltrim(REDIS_KEY, -30, -1)
     except Exception as e:
