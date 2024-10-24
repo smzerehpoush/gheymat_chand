@@ -228,6 +228,11 @@ while True:
             prices.append(('طلاین', f'{talayen_buy_price:,} - {talayen_sell_price:,}'))
             dataset_prices['talayen']= int((talayen_buy_price+ talayen_sell_price)/2)
 
+        goldika_buy_price, goldika_sell_price = get_goldika_prices()
+        if goldika_buy_price and goldika_sell_price:
+            prices.append(('گلدیکا', f'{goldika_buy_price:,} - {goldika_sell_price:,}'))
+            dataset_prices['goldika']= int((goldika_buy_price+ goldika_sell_price)/2)
+
         # bazar_buy_price, bazar_sell_price = get_bazar_prices()
         # if bazar_buy_price and bazar_sell_price:
             # prices.append(('بازر', f'{bazar_buy_price:,} - {bazar_sell_price:,}'))
