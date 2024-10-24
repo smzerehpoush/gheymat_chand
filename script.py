@@ -6,6 +6,7 @@ import traceback
 import redis
 import requests
 from khayyam import JalaliDatetime
+from bs4 import BeautifulSoup
 
 profile = os.environ.get('GHEYMAT_CHAND_PROFILE')
 bot_token = os.environ.get('BOT_TOKEN')
@@ -160,6 +161,29 @@ def get_tala_dot_ir_prices():
     except Exception:
         traceback.print_exc()
         return None, None
+    
+def get_talayen_prices():
+    try:
+        talayen_response = requests.get("https://tlyn.ir/", timeout=1)
+        if talayen_response.status_code != 200:
+            print(f'talayen error:\n{talayen_response.content}')
+            requests.post(url, data={'chat_id': private_chat_id,
+                                     'text': f'Talayen error:\n {talayen_response.status_code} \n {talayen_response.content}'},
+                          timeout=1)
+            return None, None
+        soup = BeautifulSoup(response.content, 'html.parser')
+        buy_element = soup.select_one('#buy-price-n .elementor-shortcode')
+        sell_element = soup.select_one('#sale-price-n .elementor-shortcode')
+        return extract_tlyn_number(buy_element),  extract_tlyn_number(sell_element)
+    except Exception:
+        traceback.print_exc()
+        return None, None
+    
+def extract_tlyn_number(value):
+    if value:
+        return int(value.get_text(strip=True).replace(',', ''))
+    else:
+        return None
 
 def store_prices_in_redis(prices):
     try:
@@ -199,10 +223,10 @@ while True:
             prices.append(('طلاسی', f'{talasea_buy_price:,} - {talasea_sell_price:,}'))
             dataset_prices['talasi']= int((talasea_buy_price+ talasea_sell_price)/2)
 
-        goldika_buy_price, goldika_sell_price = get_goldika_prices()
-        if goldika_buy_price and goldika_sell_price:
-            prices.append(('گلدیکا', f'{goldika_buy_price:,} - {goldika_sell_price:,}'))
-            dataset_prices['goldika']= int((goldika_buy_price+ goldika_sell_price)/2)
+        talayen_buy_price, talayen_sell_price = get_talayen_prices()
+        if talayen_buy_price and talayen_sell_price:
+            prices.append(('طلاین', f'{talayen_buy_price:,} - {talayen_sell_price:,}'))
+            dataset_prices['talayen']= int((talayen_buy_price+ talayen_sell_price)/2)
 
         # bazar_buy_price, bazar_sell_price = get_bazar_prices()
         # if bazar_buy_price and bazar_sell_price:

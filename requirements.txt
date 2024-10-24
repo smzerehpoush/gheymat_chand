@@ -1,4 +1,5 @@
 async-timeout==4.0.3
+beautifulsoup4==4.12.3
 blinker==1.8.2
 certifi==2024.2.2
 charset-normalizer==3.3.2
@@ -12,6 +13,7 @@ Khayyam==3.0.17
 MarkupSafe==2.1.5
 redis==5.0.7
 requests==2.31.0
+soupsieve==2.6
 urllib3==2.2.1
 Werkzeug==3.0.3
 zipp==3.19.2
