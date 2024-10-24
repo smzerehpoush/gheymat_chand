@@ -15,7 +15,7 @@ REDIS_KEY = 'prices_history'
 def get_last_n_prices():
     try:
         # Get the 'n' query parameter from the request, default to 30 if not provided
-        n = request.args.get('n', default=30, type=int)
+        n = request.args.get('size', default=30, type=int)
         
         # Fetch the last 'n' items from the Redis list
         # Using -n for the start index to get the last n prices
