@@ -171,7 +171,7 @@ def get_talayen_prices():
                                      'text': f'Talayen error:\n {talayen_response.status_code} \n {talayen_response.content}'},
                           timeout=1)
             return None, None
-        soup = BeautifulSoup(response.content, 'html.parser')
+        soup = BeautifulSoup(talayen_response.content, 'html.parser')
         buy_element = soup.select_one('#buy-price-n .elementor-shortcode')
         sell_element = soup.select_one('#sale-price-n .elementor-shortcode')
         return extract_tlyn_number(buy_element),  extract_tlyn_number(sell_element)
