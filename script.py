@@ -95,7 +95,7 @@ def get_bazar_prices():
         }
 
         bazar_response = requests.get("https://web.baazar.ir/api/shop/account/v1/dashboard", headers=bazar_headers,
-                                      timeout=1)
+                                      timeout=5)
         if bazar_response.status_code != 200:
             print(f'bazaar error:\n{bazar_response.content}')
             if bazar_response.status_code != 401:
@@ -149,7 +149,7 @@ def get_daric_prices(timestamp):
 
 def get_tala_dot_ir_prices():
     try:
-        tala_dot_ir_response = requests.get("https://www.tala.ir/ajax/price/talair", timeout=1)
+        tala_dot_ir_response = requests.get("https://www.tala.ir/ajax/price/talair", timeout=5)
         if tala_dot_ir_response.status_code != 200:
             print(f'tala.ir error:\n{tala_dot_ir_response.content}')
             requests.post(url, data={'chat_id': private_chat_id,
@@ -187,7 +187,7 @@ def extract_tlyn_number(value):
 
 def get_abshode_prices():
     try:
-        abshode_response = requests.get("http://65.109.177.25/api/v1/crawler/abshdanaghdy/prices", timeout=1)
+        abshode_response = requests.get("http://65.109.177.25/api/v1/crawler/abshdanaghdy/prices", timeout=5)
         if abshode_response.status_code != 200:
             print(f'abshode error:\n{abshode_response.content}')
             requests.post(url, data={'chat_id': private_chat_id,
