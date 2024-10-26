@@ -261,15 +261,16 @@ while True:
         abshode_unofficial_price, abshode_cash_price = get_abshode_prices()
 
         if abshode_unofficial_price:
-            prices.append(('آبشده غیررسمی', f'{abshode_unofficial_price:,} - {abshode_unofficial_price:,}'))
+            prices.append(('غیررسمی', f'{abshode_unofficial_price:,} - {abshode_unofficial_price:,}'))
             dataset_prices['abshode_unofficial']= abshode_unofficial_price
 
         if abshode_cash_price:
-            prices.append(('آبشده نقدی', f'{abshode_cash_price:,} - {abshode_cash_price:,}'))
+            prices.append(('نقدی', f'{abshode_cash_price:,} - {abshode_cash_price:,}'))
             dataset_prices['abshode_cash']= abshode_cash_price
         
         store_prices_in_redis({'time': timestamp, 'prices': dataset_prices})
         prices.append(('اختلاف میلی و طلا', f'{milli_buy_price - tala_dot_ir_buy_price:,}'))
+        prices.append(('اختلاف میلی و نقدی', f'{milli_buy_price - abshode_cash_price:,}'))
 
         for name, price in prices:
             text += f"<code>{name}{' ' * (10 - len(name))}{price}</code>\n"
