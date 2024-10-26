@@ -153,7 +153,7 @@ def get_tala_dot_ir_prices():
         if tala_dot_ir_response.status_code != 200:
             print(f'tala.ir error:\n{tala_dot_ir_response.content}')
             requests.post(url, data={'chat_id': private_chat_id,
-                                     'text': f'Milli Gold error:\n {tala_dot_ir_response.status_code} \n {tala_dot_ir_response.content}'},
+                                     'text': f'Tala.ir error:\n {tala_dot_ir_response.status_code} \n {tala_dot_ir_response.content}'},
                           timeout=1)
             return None, None
         tala_dot_ir_price = int(tala_dot_ir_response.json()['gold']['gold_18k']['v'].replace(",", ""))
@@ -184,6 +184,23 @@ def extract_tlyn_number(value):
         return int(value.get_text(strip=True).replace(',', ''))
     else:
         return None
+
+def get_abshode_prices():
+    try:
+        abshode_response = requests.get("http://65.109.177.25/api/v1/crawler/abshdanaghdy/prices", timeout=1)
+        if abshode_response.status_code != 200:
+            print(f'abshode error:\n{abshode_response.content}')
+            requests.post(url, data={'chat_id': private_chat_id,
+                                     'text': f'Abshode error:\n {abshode_response.status_code} \n {abshode_response.content}'},
+                          timeout=1)
+            return None, None
+        unofficial_price = int(int(abshode_response.json()['unofficial'])/4.331802) if abshode_response.json()['unofficial'] else None
+        cash_price = int(int(abshode_response.json()['cash'])/4.331802) if abshode_response.json()['cash'] else None
+        return unofficial_price, cash_price
+    except Exception:
+        traceback.print_exc()
+        return None, None
+
 
 def store_prices_in_redis(prices):
     try:
@@ -241,6 +258,16 @@ while True:
         #     prices.append(('داریک', f'{daric_buy_price:,} - {daric_sell_price:,}'))
         #     dataset_prices['داریک']= int((daric_buy_price+ daric_sell_price)/2)
 
+        abshode_unofficial_price, abshode_cash_price = get_abshode_prices()
+
+        if abshode_unofficial_price:
+            prices.append(('آبشده غیررسمی', f'{abshode_unofficial_price:,} - {abshode_unofficial_price:,}'))
+            dataset_prices['abshode_unofficial']= abshode_unofficial_price
+
+        if abshode_cash_price:
+            prices.append(('آبشده نقدی', f'{abshode_cash_price:,} - {abshode_cash_price:,}'))
+            dataset_prices['abshode_cash']= abshode_cash_price
+        
         store_prices_in_redis({'time': timestamp, 'prices': dataset_prices})
         prices.append(('اختلاف میلی و طلا', f'{milli_buy_price - tala_dot_ir_buy_price:,}'))
 
