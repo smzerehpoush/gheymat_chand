@@ -226,10 +226,20 @@ while True:
         if milli_buy_price:
             prices.append(('میلی', f'{milli_buy_price:,} - {milli_sell_price:,}'))
             dataset_prices['milli.gold']= int((milli_buy_price+ milli_sell_price)/2)
+        
+        abshode_unofficial_price, abshode_cash_price = get_abshode_prices()
+
+        if abshode_cash_price:
+            prices.append(('نقدی', f'{abshode_cash_price:,} - {abshode_cash_price:,}'))
+            dataset_prices['abshode_cash']= abshode_cash_price
+        
+        if abshode_unofficial_price:
+            prices.append(('غیررسمی', f'{abshode_unofficial_price:,} - {abshode_unofficial_price:,}'))
+            dataset_prices['abshode_unofficial']= abshode_unofficial_price
 
         tala_dot_ir_buy_price, tala_dot_ir_sell_price = get_tala_dot_ir_prices()
         if tala_dot_ir_buy_price and tala_dot_ir_sell_price:
-            prices.append(('سایت طلا', f'{tala_dot_ir_buy_price:,} - {tala_dot_ir_sell_price:,}'))
+            prices.append(('طلا', f'{tala_dot_ir_buy_price:,} - {tala_dot_ir_sell_price:,}'))
             dataset_prices['tala.ir']= int((tala_dot_ir_buy_price+ tala_dot_ir_sell_price)/2)
         
 
@@ -257,16 +267,6 @@ while True:
         # if daric_buy_price and daric_sell_price:
         #     prices.append(('داریک', f'{daric_buy_price:,} - {daric_sell_price:,}'))
         #     dataset_prices['داریک']= int((daric_buy_price+ daric_sell_price)/2)
-
-        abshode_unofficial_price, abshode_cash_price = get_abshode_prices()
-
-        if abshode_unofficial_price:
-            prices.append(('غیررسمی', f'{abshode_unofficial_price:,} - {abshode_unofficial_price:,}'))
-            dataset_prices['abshode_unofficial']= abshode_unofficial_price
-
-        if abshode_cash_price:
-            prices.append(('نقدی', f'{abshode_cash_price:,} - {abshode_cash_price:,}'))
-            dataset_prices['abshode_cash']= abshode_cash_price
         
         store_prices_in_redis({'time': timestamp, 'prices': dataset_prices})
         if milli_buy_price and tala_dot_ir_buy_price:
