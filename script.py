@@ -269,8 +269,10 @@ while True:
             dataset_prices['abshode_cash']= abshode_cash_price
         
         store_prices_in_redis({'time': timestamp, 'prices': dataset_prices})
-        prices.append(('اختلاف میلی و طلا', f'{milli_buy_price - tala_dot_ir_buy_price:,}'))
-        prices.append(('اختلاف میلی و نقدی', f'{milli_buy_price - abshode_cash_price:,}'))
+        if milli_buy_price and tala_dot_ir_buy_price:
+            prices.append(('اختلاف میلی و طلا', f'{milli_buy_price - tala_dot_ir_buy_price:,}'))
+        if milli_buy_price and abshode_cash_price:
+            prices.append(('اختلاف میلی و نقدی', f'{milli_buy_price - abshode_cash_price:,}'))
 
         for name, price in prices:
             text += f"<code>{name}{' ' * (10 - len(name))}{price}</code>\n"
