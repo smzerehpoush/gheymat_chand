@@ -213,6 +213,10 @@ def store_prices_in_redis(prices):
         print(f"Error storing prices in Redis: {e}")
         traceback.print_exc()
 
+def check_milli_price(price):
+    if price <= 4580:
+        requests.post(url, data={'chat_id': 296382884, 'text': f'milli price {price}'})
+
 while True:
     try:
         now = JalaliDatetime.now()
@@ -223,6 +227,7 @@ while True:
         text = ''
         prices.append(('قیمت طلا 🟡', ''))
         milli_buy_price, milli_sell_price = get_milli_prices()
+        check_milli_price(milli_buy_price)
         if milli_buy_price:
             prices.append(('میلی', f'{milli_buy_price:,} - {milli_sell_price:,}'))
             dataset_prices['milli.gold']= int((milli_buy_price+ milli_sell_price)/2)
