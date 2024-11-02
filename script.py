@@ -214,7 +214,7 @@ def store_prices_in_redis(prices):
         traceback.print_exc()
 
 def check_milli_price(price):
-    if price <= 4580:
+    if price <= 4607000:
         requests.post(url, data={'chat_id': 296382884, 'text': f'milli price {price}'})
 
 while True:
