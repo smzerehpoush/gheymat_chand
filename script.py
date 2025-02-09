@@ -32,6 +32,22 @@ def get_milli_prices():
     except Exception:
         traceback.print_exc()
         return None, None
+    
+def get_technogold_prices():
+    try:
+        technogold_response = requests.get("https://api.technogold.gold/level/prices", timeout=1)
+        if technogold_response.status_code != 200:
+            print(f'technogold error:\n{technogold_response.content}')
+            requests.post(url, data={'chat_id': private_chat_id,
+                                     'text': f'technogold Gold error:\n {technogold_response.status_code} \n {technogold_response.content}'},
+                          timeout=1)
+            return None, None
+        technogold_buy_price = int(technogold_response.json()['data'][0]['buyPrice'])
+        technogold_sell_price = int(technogold_response.json()['data'][0]['sellPrice'])
+        return technogold_buy_price, technogold_sell_price
+    except Exception:
+        traceback.print_exc()
+        return None, None
 
 def get_digikala_prices():
     try:
@@ -305,6 +321,11 @@ while True:
         if digikala_buy_price and digikala_sell_price:
             prices.append(('دیجیکالا', f'{digikala_buy_price:,} - {digikala_sell_price:,}'))
             dataset_prices['digikala']= int((digikala_buy_price+ digikala_sell_price)/2)
+        
+        technogold_buy_price, technogold_sell_price = get_technogold_prices()
+        if technogold_buy_price and technogold_sell_price:
+            prices.append(('تکنو گلد', f'{technogold_buy_price:,} - {technogold_sell_price:,}'))
+            dataset_prices['technogold']= int((technogold_buy_price+ technogold_sell_price)/2)
 
         # daric_buy_price, daric_sell_price = get_daric_prices(timestamp)
         # if daric_buy_price and daric_sell_price:
