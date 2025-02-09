@@ -20,6 +20,7 @@ REDIS_KEY = 'prices_history'
 def get_milli_prices():
     try:
         milli_response = requests.get("https://milli.gold/api/v1/public/milli-price/detail", timeout=1)
+        #milli_response = requests.get("http://65.109.177.25:5000/api/v1/public/milli-price/detail", timeout=1)
         if milli_response.status_code != 200:
             print(f'milli error:\n{milli_response.content}')
             requests.post(url, data={'chat_id': private_chat_id,
@@ -214,8 +215,9 @@ def store_prices_in_redis(prices):
         traceback.print_exc()
 
 def check_milli_price(price):
-    if price <= 4400000:
-        requests.post(url, data={'chat_id': 296382884, 'text': f'milli price {price}'})
+    if price and (price <= 5400000):
+        #requests.post(url, data={'chat_id': 296382884, 'text': f'milli price {price}'})
+        requests.post(url, data={'chat_id': -4636462998, 'text': f'milli price {price}'})
 
 while True:
     try:
